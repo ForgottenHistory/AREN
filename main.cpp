@@ -21,7 +21,5 @@ int main()
     cout << vao << endl;
 
     cout << fname(1, 2, 3) << endl;
-    int x;
-    cin >> x;
     return 0;
 }
