@@ -7,7 +7,8 @@
             "command": "${workspaceFolder}\\build.bat",
             "args": [
                 "${workspaceFolder}/include",
-                "main"
+                "main",
+                "${workspaceFolder}/libs"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
