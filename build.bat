@@ -11,8 +11,5 @@ for /r %%f in (*.cpp) do (
     set "CPPFiles=!CPPFiles! "%%f""
 )
 
-echo List of CPP files:
-echo %CPPFiles%
-
 g++ %CPPFiles% -o %OUTPUT_FILE% -lstdc++ -I"%INCLUDE_FOLDER%" -L"%LIB_FOLDER%" -lglfw3 -lopengl32 -lgdi32 -luser32 -lglew32
 g++ %CPPFiles% -o %OUTPUT_FILE% -lstdc++ -I"%INCLUDE_FOLDER%" -L"%LIB_FOLDER%" -lglfw3 -lopengl32 -lgdi32 -luser32 -lglew32
