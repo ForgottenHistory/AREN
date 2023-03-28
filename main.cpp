@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <test.h>
 
 using namespace std;
 
@@ -13,6 +14,8 @@ int main()
         cout << word << " ";
     }
     cout << endl;
+
+    cout << fname(1, 2, 3) << endl;
     int x;
     cin >> x;
     return 0;
