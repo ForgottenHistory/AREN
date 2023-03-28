@@ -1,6 +1,3 @@
-#include <iostream>
-#include <glew/include/GL/glew.h>
-#include <glfw/include/GLFW/glfw3.h>
 #include <render/arenderer.h>
 
 using namespace std;
@@ -15,6 +12,5 @@ int main()
         renderer.Render();
     }
 
-    glfwTerminate();
     return 0;
 }
