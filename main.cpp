@@ -1,7 +1,4 @@
 #include <iostream>
-#include <vector>
-#include <string>
-#include <debug/test.h>
 #include <glew/include/GL/glew.h>
 #include <glfw/include/GLFW/glfw3.h>
 
@@ -9,17 +6,27 @@ using namespace std;
 
 int main()
 {
-    vector<string> msg {"Hello", "C++", "World", "from", "VS Code", "and the C++ extension!"};
-
-    for (const string& word : msg)
+    // Initialize GLFW
+    if (!glfwInit())
     {
-        cout << word << " ";
+        std::cerr << "Failed to initialize GLFW" << std::endl;
+        return -1;
     }
-    cout << endl;
 
-    GLuint vao = 2;
-    cout << vao << endl;
+    // Create a window
+    GLFWwindow *window = glfwCreateWindow(800, 600, "Game Engine", nullptr, nullptr);
+    if (!window)
+    {
+        std::cerr << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
 
-    cout << fname(1, 2, 3) << endl;
+    // Set the window's OpenGL context
+    glfwMakeContextCurrent(window);
+
+    // Initialize GLEW
+    GLenum glewInitResult = glewInit();
+
     return 0;
 }
