@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <test.h>
+#include <debug/test.h>
 
 using namespace std;
 
