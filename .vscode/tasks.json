@@ -4,12 +4,10 @@
         {
             "type": "shell",
             "label": "C/C++: g++.exe build active file",
-            "command": "g++",
+            "command": "./build.sh",
             "args": [
                 "${file}",
-                "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}",
-                "-lstdc++"
+                "-lstdc++",
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
