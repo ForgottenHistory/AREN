@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
-#include <glew/include/GL/glew.h>
-#include <glfw/include/GLFW/glfw3.h>
+#include <glfw/glfw3.h>
 
 class ARenderer{
 public:
@@ -9,11 +8,13 @@ public:
     ~ARenderer();
 
     void Init();
-    void Render();
 
-    GLuint LoadShader(GLenum shaderType, const std::string& shaderSource);
+void Render();
 
-    GLFWwindow *window = nullptr;
+GLuint LoadShader(GLenum shaderType, std::string &shaderSource);
+std::string ReadFile(const char * filePath);
+
+GLFWwindow *window = nullptr;
 
 private: 
     // Triangle data
@@ -29,4 +30,7 @@ private:
 
     // OpenGL objects
     GLuint VAO, VBO, EBO;
+
+    std::string vertexShaderSource;
+    std::string fragmentShaderSource;
 };
