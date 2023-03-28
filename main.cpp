@@ -9,8 +9,7 @@ int main()
 {
     // Create a renderer
     ARenderer renderer;
-    renderer.Init();
-    
+
     while (!glfwWindowShouldClose(renderer.window))
     {
         renderer.Render();
