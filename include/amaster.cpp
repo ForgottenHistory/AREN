@@ -1,10 +1,14 @@
 #include <amaster.h>
 #include <render/arenderer.h>
 #include <time.h>
+#include <aobject.h>
 
 AMaster::AMaster()
 {
     renderer = new ARenderer();
+
+    entities.push_back(new AObject());
+    entities[0]->AddComponent(new ExampleComponent());
 }
 
 AMaster::~AMaster()

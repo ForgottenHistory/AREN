@@ -1,5 +1,7 @@
 #pragma once
 #include <render/arenderer.h>
+#include <aobject.h>
+#include <vector>
 
 class AMaster
 {
@@ -15,4 +17,6 @@ private:
     ARenderer* renderer;
 
     float printTime = 0.5f;
+
+    std::vector<AObject*> entities;
 };
