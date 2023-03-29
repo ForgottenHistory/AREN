@@ -1,33 +1,25 @@
 #pragma once
-#include <glm/glm.hpp>
 
-typedef glm::vec3 vec3;
+#include <unordered_map>
+#include <typeindex>
+#include <acomponent.h>
 
 class AObject {
 public:
-    AObject();
-    ~AObject();
+    template<typename T>
+    void AddComponent(T* component) {
+        components[typeid(T)] = component;
+    }
 
-    void Update();
-    void Render();
+    template<typename T>
+    T* GetComponent() {
+        auto it = components.find(typeid(T));
+        if (it != components.end()) {
+            return static_cast<T*>(it->second);
+        }
+        return nullptr;
+    }
 
-    // Getters
-    const vec3& GetPosition() const;
-    const vec3& GetRotation() const;
-    const vec3& GetScale() const;
-
-    // Setters
-    void SetPosition(const vec3& newPosition);
-    void SetRotation(const vec3& newRotation);
-    void SetScale(const vec3& newScale);
-
-    // Transformations
-    void Translate(const vec3& translation);
-    void Rotate(const vec3& rotation);
-    void Scale(const vec3& scale);
-
-    vec3 position;
-    vec3 rotation;
-    vec3 scale;
-
+private:
+    std::unordered_map<std::type_index, Component*> components;
 };
