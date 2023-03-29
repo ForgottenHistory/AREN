@@ -17,7 +17,7 @@ public:
 
 protected:
     // Function to generate and bind VAO, VBO, and EBO.
-    void setupBuffers();
+    virtual void setupBuffers() = 0;
 
     // Generate vertex data for the shape.
     virtual std::vector<GLfloat> generateVertexData() const = 0;

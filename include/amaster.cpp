@@ -9,6 +9,7 @@ AMaster::AMaster()
 
     entities.push_back(new AObject());
     entities[0]->AddComponent(new ExampleComponent());
+
 }
 
 AMaster::~AMaster()
