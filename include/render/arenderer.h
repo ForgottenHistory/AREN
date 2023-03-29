@@ -56,8 +56,6 @@ private:
         0, 2, 3  // Second triangle
 };
 
-    float elapsedTime = 0.0f;
-
     // OpenGL objects
     GLuint VAO, VBO, EBO;
     GLuint shaderProgram;

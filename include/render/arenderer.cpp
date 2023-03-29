@@ -9,6 +9,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <time.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR / DESTRUCTOR
@@ -119,14 +120,8 @@ void ARenderer::Init()
 // Ran in main loop (main.cpp)
 void ARenderer::Render()
 {
-    // Calculate elapsed time since last frame
-    static double lastTime = glfwGetTime();
-    double currentTime = glfwGetTime();
-    float deltaTime = static_cast<float>(currentTime - lastTime);
-    lastTime = currentTime;
-
     // Update the elapsedTime variable
-    elapsedTime += deltaTime;
+    float elapsedTime = Time::elapsedTime;
 
     // Calculate the offset based on elapsed time
     float offsetX = sin(elapsedTime) * 0.5f;
