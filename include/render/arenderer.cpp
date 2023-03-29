@@ -121,11 +121,12 @@ void ARenderer::Init()
 void ARenderer::Render()
 {
     // Update the elapsedTime variable
-    float elapsedTime = Time::elapsedTime;
+    float sinTime = Time::sinTime;
+    float cosTime = Time::cosTime;
 
     // Calculate the offset based on elapsed time
-    float offsetX = sin(elapsedTime) * 0.5f;
-    float offsetY = cos(elapsedTime) * 0.5f;
+    float offsetX = sinTime * 0.5f;
+    float offsetY = cosTime * 0.5f;
 
     // Clear the color buffer
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);

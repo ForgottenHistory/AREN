@@ -23,9 +23,9 @@ void Time::UpdateTime()
     elapsedTime += deltaTime;
 
     // Calculate the offset based on elapsed time
-    sinTime = sin(elapsedTime) * 0.5f;
-    cosTime = cos(elapsedTime) * 0.5f;
-    tanTime = tan(elapsedTime) * 0.5f;
+    sinTime = sin(elapsedTime);
+    cosTime = cos(elapsedTime);
+    tanTime = tan(elapsedTime);
 }
 
 void Time::PrintTime()
