@@ -1,6 +1,7 @@
 #include "Time.h"
 #include <GLFW/glfw3.h>
 #include <cmath>
+#include <iostream>
 
 float Time::time = 0.0f;
 float Time::deltaTime = 0.0f;
@@ -25,4 +26,9 @@ void Time::UpdateTime()
     sinTime = sin(elapsedTime) * 0.5f;
     cosTime = cos(elapsedTime) * 0.5f;
     tanTime = tan(elapsedTime) * 0.5f;
+}
+
+void Time::PrintTime()
+{
+    std::cout << "deltaTime: " << deltaTime << " elapsedTime: " << elapsedTime << std::endl;
 }

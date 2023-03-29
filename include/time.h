@@ -10,6 +10,7 @@ public:
     static float elapsedTime;
 
     static void UpdateTime();
+    static void PrintTime();
 
 private:
     static float currentTime;
