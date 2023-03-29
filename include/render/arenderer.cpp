@@ -6,6 +6,9 @@
 #include <cmath>
 #include <render/arenderer.h>
 #include <time.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR / DESTRUCTOR
@@ -54,7 +57,7 @@ void ARenderer::Init()
     }
 
     // Load shaders
-    vertexShaderSource = ReadFile("shaders/vertex_move_shader.glsl");
+    vertexShaderSource = ReadFile("shaders/vertex_shader.glsl");
     fragmentShaderSource = ReadFile("shaders/fragment_shader.glsl");
     GLuint vertexShader = LoadShader(GL_VERTEX_SHADER, vertexShaderSource);
     GLuint fragmentShader = LoadShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
@@ -88,6 +91,25 @@ void ARenderer::Init()
     // Clean up shader objects
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+
+        // Create a model matrix
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+
+    // Create a view matrix
+    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+    glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+    view = glm::lookAt(cameraPos, cameraTarget, cameraUp);
+
+    // Create a projection matrix
+    float aspectRatio = 1280.0f / 720.0f;
+    float fov = glm::radians(45.0f);
+    float nearPlane = 0.1f;
+    float farPlane = 100.0f;
+    projection = glm::perspective(fov, aspectRatio, nearPlane, farPlane);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,11 +136,19 @@ void ARenderer::Render()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Perform your rendering tasks here
+    // Rendering tasks
     glUseProgram(shaderProgram);
     glUniform2f(glGetUniformLocation(shaderProgram, "uOffset"), offsetX, offsetY);
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0);
+
+    GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
+    GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
+    GLint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
+
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
     // Unbind the VAO and shader program
     glBindVertexArray(0);

@@ -1,6 +1,9 @@
 #pragma once
 #include <iostream>
 #include <glfw/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ARenderer
 {
@@ -61,6 +64,8 @@ private:
 
     std::string vertexShaderSource;
     std::string fragmentShaderSource;
+
+    glm::mat4 view, projection, model;
     
     ///////////////////////////////////////////////////////////////////////
 };
