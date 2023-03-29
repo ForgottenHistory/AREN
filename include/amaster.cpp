@@ -1,7 +1,6 @@
 #include <amaster.h>
 #include <render/arenderer.h>
 #include <time.h>
-#include <cmath>
 
 AMaster::AMaster()
 {
