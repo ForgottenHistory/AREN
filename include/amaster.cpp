@@ -1,15 +1,19 @@
 #include <amaster.h>
+#include <aobject.h>
+#include <amanager.h>
 #include <render/arenderer.h>
 #include <time.h>
-#include <aobject.h>
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 AMaster::AMaster()
 {
     renderer = new ARenderer();
+    objectManager = new AObjectManager();
 
-    entities.push_back(new AObject());
-    entities[0]->AddComponent(new ATransform());
-    entities[0]->AddComponent(new ACamera());
+    mainCamera = objectManager->CreateObject();
+    mainCamera->AddComponent(new ATransform());
+    mainCamera->AddComponent(new ACamera());
 }
 
 AMaster::~AMaster()
@@ -17,6 +21,8 @@ AMaster::~AMaster()
     glfwTerminate();
     delete renderer;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMaster::MainLoop()
 {
@@ -27,17 +33,40 @@ void AMaster::MainLoop()
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMaster::PreStart()
+{
+    objectManager->PreStart();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMaster::Start()
+{
+    objectManager->Start();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void AMaster::Update()
 {
     Time::UpdateTime();
-    for( int entityIndex = 0; entityIndex < entities.size(); entityIndex++ )
-    {
-        entities[entityIndex]->Update();
-    }
+    objectManager->Update();
 }
 
-void AMaster::Render()
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMaster::SecondUpdate()
 {
+    objectManager->SecondUpdate();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMaster::Render()
+{   
+    objectManager->Render();
     renderer->Render();
 
     float elapsedTime = Time::elapsedTime;
@@ -54,3 +83,5 @@ void AMaster::Render()
     // Poll for and process events
     glfwPollEvents();
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

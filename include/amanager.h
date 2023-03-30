@@ -1,35 +1,29 @@
 #pragma once
+
 #include <vector>
 
-class AObjectManager;
-class ARenderer;
 class AObject;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class AMaster
-{
+class AObjectManager {
 public:
-    AMaster();
-    ~AMaster();
+    AObjectManager();
+    ~AObjectManager();
 
-    void MainLoop();
     void PreStart();
     void Start();
     void Update();
     void SecondUpdate();
     void Render();
 
+    AObject* CreateObject();
+    void DestroyObject(AObject* object);
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 private:
-
-    ARenderer* renderer;
-    AObjectManager* objectManager;
-
-    AObject* mainCamera;
-
-    float printTime = 0.5f;
+    std::vector<AObject*> objects;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
