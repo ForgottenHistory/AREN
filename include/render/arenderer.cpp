@@ -93,7 +93,7 @@ void ARenderer::Init()
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-        // Create a model matrix
+    // Create a model matrix
     model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
     model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
