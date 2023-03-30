@@ -1,40 +1,44 @@
 #include "acomponent.h"
+#include <aobject.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TRANSFORM COMPONENT
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ATransform::ATransform(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
-    : position(position), rotation(rotation), scale(scale)
+ATransform::ATransform(AObject *_owner, const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale)
 {
+    owner = _owner;
+    this->position = position;
+    this->rotation = rotation;
+    this->scale = scale;    
 }
 
-const glm::vec3& ATransform::GetPosition() const
+const glm::vec3 &ATransform::GetPosition() const
 {
     return position;
 }
 
-const glm::vec3& ATransform::GetRotation() const
+const glm::vec3 &ATransform::GetRotation() const
 {
     return rotation;
 }
 
-const glm::vec3& ATransform::GetScale() const
+const glm::vec3 &ATransform::GetScale() const
 {
     return scale;
 }
 
-void ATransform::SetPosition(const glm::vec3& _position)
+void ATransform::SetPosition(const glm::vec3 &_position)
 {
     position = _position;
 }
 
-void ATransform::SetRotation(const glm::vec3& _rotation)
+void ATransform::SetRotation(const glm::vec3 &_rotation)
 {
     rotation = _rotation;
 }
 
-void ATransform::SetScale(const glm::vec3& _scale)
+void ATransform::SetScale(const glm::vec3 &_scale)
 {
     scale = _scale;
 }
@@ -43,8 +47,10 @@ void ATransform::SetScale(const glm::vec3& _scale)
 // CAMERA
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ACamera::ACamera()
+ACamera::ACamera(AObject *_owner)
 {
+    owner = _owner;
+
     // Initialize the view and projection matrices
     Update();
 }
@@ -96,6 +102,5 @@ void ACamera::UpdateProjectionMatrix()
     // Update the projection matrix
     projectionMatrix = glm::perspective(fov, aspectRatio, nearPlane, farPlane);
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
