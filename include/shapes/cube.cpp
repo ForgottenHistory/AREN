@@ -11,7 +11,7 @@ Cube::~Cube() {
 }
 
 void Cube::Setup() {
-    setupBuffers();
+    SetupBuffers();
 }
 
 void Cube::Render() {
@@ -20,7 +20,20 @@ void Cube::Render() {
     glBindVertexArray(0);
 }
 
-std::vector<GLfloat> Cube::generateVertexData() const {
+void Cube::SetupBuffers() {
+
+    // Set vertex attribute pointers for Cube
+    // Assuming the vertex data structure is: X, Y, Z, R, G, B
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void *)0);
+    glEnableVertexAttribArray(0);
+
+    // Color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void *)(3 * sizeof(GLfloat)));
+    glEnableVertexAttribArray(1);
+}
+std::vector<GLfloat> Cube::GenerateVertexData() const
+{
     std::vector<GLfloat> vertices = {
         -width / 2, -height / 2, -depth / 2,
          width / 2, -height / 2, -depth / 2,
@@ -35,7 +48,7 @@ std::vector<GLfloat> Cube::generateVertexData() const {
     return vertices;
 }
 
-std::vector<GLuint> Cube::generateIndexData() const {
+std::vector<GLuint> Cube::GenerateIndexData() const {
     std::vector<GLuint> indices = {
         0, 1, 2, 2, 3, 0,
         1, 5, 6, 6, 2, 1,
