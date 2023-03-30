@@ -8,8 +8,8 @@ AMaster::AMaster()
     renderer = new ARenderer();
 
     entities.push_back(new AObject());
-    entities[0]->AddComponent(new ExampleComponent());
-
+    entities[0]->AddComponent(new ATransform());
+    entities[0]->AddComponent(new ACamera());
 }
 
 AMaster::~AMaster()
@@ -30,6 +30,10 @@ void AMaster::MainLoop()
 void AMaster::Update()
 {
     Time::UpdateTime();
+    for( int entityIndex = 0; entityIndex < entities.size(); entityIndex++ )
+    {
+        entities[entityIndex]->Update();
+    }
 }
 
 void AMaster::Render()

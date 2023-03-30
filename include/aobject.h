@@ -20,6 +20,12 @@ public:
         return nullptr;
     }
 
+    void Update() {
+        for (auto& it : components) {
+            it.second->Update();
+        }
+    }
+    
 private:
     std::unordered_map<std::type_index, Component*> components;
 };
