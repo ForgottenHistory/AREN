@@ -66,51 +66,9 @@ void ARenderer::Init()
     // Create and link the shader program
     shaderProgram = CreateShaderProgram(vertexShader, fragmentShader);
 
-    // Set up the vertex data and configure the VAO, VBO, and EBO
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    // Bind the VAO
-    glBindVertexArray(VAO);
-
-    // Bind and set the vertex buffer data
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Bind and set the element buffer data
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Configure the vertex attributes
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void *)0);
-    glEnableVertexAttribArray(0);
-
-    // Unbind the VAO
-    glBindVertexArray(0);
-
     // Clean up shader objects
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-
-    // Create a model matrix
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-    model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-
-    // Create a view matrix
-    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-    glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-    view = glm::lookAt(cameraPos, cameraTarget, cameraUp);
-
-    // Create a projection matrix
-    float aspectRatio = 1280.0f / 720.0f;
-    float fov = glm::radians(45.0f);
-    float nearPlane = 0.1f;
-    float farPlane = 100.0f;
-    projection = glm::perspective(fov, aspectRatio, nearPlane, farPlane);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,35 +78,11 @@ void ARenderer::Init()
 // Ran in main loop (main.cpp)
 void ARenderer::Render()
 {
-    // Update the elapsedTime variable
-    float sinTime = Time::sinTime;
-    float cosTime = Time::cosTime;
-
-    // Calculate the offset based on elapsed time
-    float offsetX = sinTime * 0.5f;
-    float offsetY = cosTime * 0.5f;
-
     // Clear the color buffer
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Rendering tasks
     glUseProgram(shaderProgram);
-    glUniform2f(glGetUniformLocation(shaderProgram, "uOffset"), offsetX, offsetY);
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0);
-
-    GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
-    GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
-    GLint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
-
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
-    // Unbind the VAO and shader program
-    glBindVertexArray(0);
-    glUseProgram(0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,7 +116,8 @@ GLuint ARenderer::CreateShaderProgram(GLuint vertexShader, GLuint fragmentShader
         glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &logLength);
         std::vector<char> log(logLength);
         glGetProgramInfoLog(shaderProgram, logLength, nullptr, log.data());
-        std::cerr << "Failed to link shader program:\n" << log.data() << std::endl;
+        std::cerr << "Failed to link shader program:\n"
+                  << log.data() << std::endl;
 
         // Clean up the shader program object
         glDeleteProgram(shaderProgram);
@@ -222,7 +157,8 @@ GLuint ARenderer::LoadShader(GLenum shaderType, std::string &shaderSource)
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
         std::vector<char> log(logLength);
         glGetShaderInfoLog(shader, logLength, nullptr, log.data());
-        std::cerr << "Failed to compile shader:\n" << log.data() << std::endl;
+        std::cerr << "Failed to compile shader:\n"
+                  << log.data() << std::endl;
 
         // Clean up the shader object
         glDeleteShader(shader);
@@ -240,13 +176,15 @@ std::string ARenderer::ReadFile(const char *filePath)
     std::string content;
     std::ifstream fileStream(filePath, std::ios::in);
 
-    if (!fileStream.is_open()) {
+    if (!fileStream.is_open())
+    {
         std::cerr << "Could not read file " << filePath << ". File does not exist." << std::endl;
         return "";
     }
 
     std::string line = "";
-    while (!fileStream.eof()) {
+    while (!fileStream.eof())
+    {
         std::getline(fileStream, line);
         content.append(line + "\n");
     }
