@@ -12,10 +12,10 @@ public:
 
 protected:
 
-    virtual void setupBuffers() override;
+    virtual void SetupBuffers() override;
 
-    std::vector<GLfloat> generateVertexData() const override;
-    std::vector<GLuint> generateIndexData() const override;
+    std::vector<GLfloat> GenerateVertexData() const override;
+    std::vector<GLuint> GenerateIndexData() const override;
 
     // Dimensions of the cube.
     float width;

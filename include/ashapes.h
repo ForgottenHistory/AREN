@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <vector>
 
@@ -17,13 +16,13 @@ public:
 
 protected:
     // Function to generate and bind VAO, VBO, and EBO.
-    virtual void setupBuffers() = 0;
+    virtual void SetupBuffers() = 0;
 
     // Generate vertex data for the shape.
-    virtual std::vector<GLfloat> generateVertexData() const = 0;
+    virtual std::vector<GLfloat> GenerateVertexData() const = 0;
 
     // Generate index data for the shape.
-    virtual std::vector<GLuint> generateIndexData() const = 0;
+    virtual std::vector<GLuint> GenerateIndexData() const = 0;
 
     // Vertex Array Object (VAO) for the shape.
     GLuint VAO;
