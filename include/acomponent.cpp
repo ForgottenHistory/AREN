@@ -9,7 +9,7 @@ ATransform::ATransform(const glm::vec3 &position, const glm::vec3 &rotation, con
 {
     this->position = position;
     this->rotation = rotation;
-    this->scale = scale;    
+    this->scale = scale; 
 }
 
 const glm::vec3 &ATransform::GetPosition() const
