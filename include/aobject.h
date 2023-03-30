@@ -7,7 +7,7 @@
 class AObject {
 public:
     template<typename T>
-    void AddComponent(T* component) {
+    void AddComponent(T* component ) {
         components[typeid(T)] = component;
     }
 
@@ -25,7 +25,7 @@ public:
             it.second->Update();
         }
     }
-    
+
 private:
     std::unordered_map<std::type_index, Component*> components;
 };
