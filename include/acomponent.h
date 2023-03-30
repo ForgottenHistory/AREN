@@ -32,7 +32,7 @@ protected:
 class ATransform : public Component
 {
 public:
-    ATransform(AObject *_owner, const glm::vec3 &position = glm::vec3(0.0f),
+    ATransform(const glm::vec3 &position = glm::vec3(0.0f),
                const glm::vec3 &rotation = glm::vec3(0.0f),
                const glm::vec3 &scale = glm::vec3(1.0f));
 
@@ -60,7 +60,7 @@ class ACamera : public Component
 {
 public:
     // Constructor
-    ACamera(AObject *_owner);
+    ACamera();
 
     // Accessor functions
     const glm::mat4 &GetViewMatrix() const;

@@ -5,9 +5,8 @@
 // TRANSFORM COMPONENT
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ATransform::ATransform(AObject *_owner, const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale)
+ATransform::ATransform(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &scale)
 {
-    owner = _owner;
     this->position = position;
     this->rotation = rotation;
     this->scale = scale;    
@@ -47,10 +46,8 @@ void ATransform::SetScale(const glm::vec3 &_scale)
 // CAMERA
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ACamera::ACamera(AObject *_owner)
+ACamera::ACamera()
 {
-    owner = _owner;
-
     // Initialize the view and projection matrices
     Update();
 }
