@@ -3,9 +3,7 @@
 #include <vector>
 #include <glad/glad.h> 
 #include <glfw/glfw3.h>
-#include <glm/vec3.hpp>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <glmpch.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // COMPONENT BASE CLASS

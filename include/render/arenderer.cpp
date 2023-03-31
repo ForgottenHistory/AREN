@@ -3,9 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <cmath>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <glmpch.h>
 #include <time.h>
 #include <acomponent.h>
 
