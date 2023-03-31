@@ -10,7 +10,14 @@ class AObject;
 class AMaster
 {
 public:
-    AMaster();
+
+    // Static method to get the singleton instance
+    static AMaster& GetInstance()
+    {
+        static AMaster instance; // Only created once
+        return instance;
+    }
+
     ~AMaster();
 
     void MainLoop();
@@ -20,9 +27,13 @@ public:
     void SecondUpdate();
     void Render();
 
+    ARenderer* GetRenderer() { return renderer; }
+    AObjectManager* GetObjectManager() { return objectManager; }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 private:
+    AMaster();
 
     ARenderer* renderer;
     AObjectManager* objectManager;
@@ -30,6 +41,10 @@ private:
     AObject* mainCamera;
 
     float printTime = 0.5f;
+
+    // Private copy constructor and assignment operator to prevent copying
+    AMaster(const AMaster&) = delete;
+    AMaster& operator=(const AMaster&) = delete;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -11,15 +11,16 @@ AMaster::AMaster()
     renderer = new ARenderer();
     objectManager = new AObjectManager();
 
-    mainCamera = objectManager->CreateObject();
-    mainCamera->AddComponent(new ATransform());
-    mainCamera->AddComponent(new ACamera());
+
+
+    //ACube* cube = objectManager->CreateCube();
 }
 
 AMaster::~AMaster()
 {
     glfwTerminate();
     delete renderer;
+    delete objectManager;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
