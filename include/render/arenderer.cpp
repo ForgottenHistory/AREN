@@ -1,15 +1,13 @@
-#include <glad/glad.h>
-#include <glfw/glfw3.h>
+#include "render/arenderer.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <cmath>
-#include <render/arenderer.h>
-#include <time.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <time.h>
+#include <acomponent.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR / DESTRUCTOR
@@ -75,7 +73,6 @@ void ARenderer::Init()
 //  RENDERING
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Ran in main loop (main.cpp)
 void ARenderer::Render()
 {
     // Clear the color buffer
@@ -83,7 +80,16 @@ void ARenderer::Render()
     glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(shaderProgram);
+
+    if (camera) {
+        GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
+        GLint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
+
+        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
+        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
+    }
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  SHADERS

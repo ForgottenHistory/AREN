@@ -1,5 +1,5 @@
 #include "amanager.h"
-#include <aobject.h>
+#include "aobject.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -60,10 +60,13 @@ void AObjectManager::SecondUpdate()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AObjectManager::Render()
-{
+{   
+    std::cout << "Rendering " << objects.size() << " objects" << std::endl;
     for( int objectIndex = 0; objectIndex < objects.size(); objectIndex++ )
     {
-        objects[objectIndex]->Render();
+        if( objects[objectIndex]->GetComponent<AMeshComponent>() != nullptr ){
+            objects[objectIndex]->Render();
+        }
     }
 }
 
@@ -72,6 +75,14 @@ void AObjectManager::Render()
 AObject* AObjectManager::CreateObject()
 {
     AObject* newObj = new AObject();
+    objects.push_back(newObj);
+
+    return newObj;
+}
+
+ACube* AObjectManager::CreateCube()
+{
+    ACube* newObj = new ACube();
     objects.push_back(newObj);
 
     return newObj;

@@ -1,6 +1,9 @@
 #pragma once
 #include <iostream>
-
+#include <vector>
+#include <glad/glad.h> 
+#include <glfw/glfw3.h>
+#include <glm/vec3.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -18,6 +21,7 @@ public:
 
     void SetOwner(AObject *_owner)
     {
+        std::cout << "Setting owner: " << _owner << std::endl;
         owner = _owner;
     }
 
@@ -78,3 +82,26 @@ private:
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class AMeshComponent : public Component {
+public:
+    AMeshComponent();
+    ~AMeshComponent();
+
+    void SetVertices(const std::vector<glm::vec3>& _vertices);
+    const std::vector<glm::vec3>& GetVertices() const;
+
+    void SetIndices(const std::vector<unsigned int>& _indices);
+    const std::vector<unsigned int>& GetIndices() const;
+
+    // Override the Update function if needed
+    void Update() override;
+    void Render();
+
+private:
+    std::vector<glm::vec3> vertices;
+    std::vector<unsigned int> indices;
+
+    // OpenGL-specific data
+    GLuint VAO, VBO, EBO;
+};
