@@ -4,6 +4,11 @@ setlocal enabledelayedexpansion
 set INCLUDE_FOLDER=%1
 set OUTPUT_FILE=%2
 set LIB_FOLDER=%3
+set PCH_FILE=./include/glmpch.h
+set PCH_OUTPUT=./include/glmpch.h.gch
+
+rem Compile the precompiled header
+g++ -Winvalid-pch -x c++-header %PCH_FILE% -o %PCH_OUTPUT% -I"%INCLUDE_FOLDER%"
 
 set "CPPFiles="
 
@@ -11,5 +16,5 @@ for /r %%f in (*.cpp) do (
     set "CPPFiles=!CPPFiles! "%%f""
 )
 set "CPPFiles=!CPPFiles! "./src/glad.c""
-
-g++ %CPPFiles% -o %OUTPUT_FILE% -lstdc++ -I"%INCLUDE_FOLDER%" -L"%LIB_FOLDER%" -lglfw3 -lopengl32 -lgdi32 -luser32
+set MAKEFLAGS=-j8
+g++ %CPPFiles% -Winvalid-pch -include %PCH_FILE% -o %OUTPUT_FILE% -lstdc++ -I"%INCLUDE_FOLDER%" -L"%LIB_FOLDER%" -lglfw3 -lopengl32 -lgdi32 -luser32
