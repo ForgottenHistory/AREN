@@ -6,7 +6,7 @@ ACube::ACube()
     // Create a mesh component and set the cube-specific vertex and index data
     AMeshComponent *meshComponent = new AMeshComponent();
 
-    std::vector<glm::vec3> cubeVertices = {
+    std::vector<glm::vec3> vertices = {
         {-0.5f, -0.5f, -0.5f},
         {0.5f, -0.5f, -0.5f},
         {0.5f, 0.5f, -0.5f},
@@ -16,7 +16,7 @@ ACube::ACube()
         {0.5f, 0.5f, 0.5f},
         {-0.5f, 0.5f, 0.5f}};
 
-    std::vector<unsigned int> cubeIndices = {
+    std::vector<unsigned int> indices = {
         0, 1, 2, 2, 3, 0,
         4, 5, 6, 6, 7, 4,
         0, 1, 5, 5, 4, 0,
@@ -24,14 +24,17 @@ ACube::ACube()
         0, 3, 7, 7, 4, 0,
         1, 2, 6, 6, 5, 1};
 
-    meshComponent->SetVertices(cubeVertices);
-    meshComponent->SetIndices(cubeIndices);
+    meshComponent->SetVertices(vertices);
+    meshComponent->SetIndices(indices);
 
     // Add the mesh component to the cube object
-    AddComponent<AMeshComponent>(meshComponent);
+    AddComponent(meshComponent);
 
     // Initialize the transform component
-    transform = new ATransform();
+    transform = new ATransform(  glm::vec3 (0.0f, 0.0f, -1.0f),
+                                 glm::vec3 (0.0f, 0.0f, 0.0f),
+                                 glm::vec3 (1.0f, 1.0f, 1.0f) );
+    AddComponent(transform);
 }
 
 ACube::~ACube()
@@ -63,9 +66,6 @@ void ACube::SecondUpdate()
 
 void ACube::Render()
 {
-    // Implement any cube-specific rendering logic here
-
-    // For example, you can call the mesh component's rendering function
     AMeshComponent *meshComponent = GetComponent<AMeshComponent>();
     if (meshComponent != nullptr)
     {

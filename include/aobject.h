@@ -14,7 +14,6 @@ public:
     void AddComponent(T *component)
     {
         components[typeid(T)] = component;
-        std::cout << "Set owner component " << this << std::endl;
         component->SetOwner(this);
     }
 

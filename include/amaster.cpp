@@ -3,17 +3,31 @@
 #include <amanager.h>
 #include <render/arenderer.h>
 #include <time.h>
+#include "render/testrenderer.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 AMaster::AMaster()
 {
+        // Create a test renderer
+    //TestRenderer* testRenderer = new TestRenderer();
+    //testRenderer->Main();
+
     renderer = new ARenderer();
     objectManager = new AObjectManager();
 
+    // Create a camera
+    mainCamera = objectManager->CreateObject();
+    ATransform* trans = new ATransform();
+    trans->SetPosition( glm::vec3(1.0f, 0.0f, 2.0f) );
+    trans->SetOwner(mainCamera);
+    mainCamera->AddComponent(trans);
 
-
-    //ACube* cube = objectManager->CreateCube();
+    ACamera* camera = new ACamera();
+    renderer->SetCamera(camera);
+    mainCamera->AddComponent(camera); 
+    
+    ACube* cube = objectManager->CreateCube();
 }
 
 AMaster::~AMaster()
@@ -54,6 +68,14 @@ void AMaster::Update()
 {
     Time::UpdateTime();
     objectManager->Update();
+    
+    float elapsedTime = Time::elapsedTime;
+
+    if (elapsedTime >= printTime)
+    {
+        Time::PrintTime();
+        printTime = elapsedTime + 0.5f;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,16 +89,8 @@ void AMaster::SecondUpdate()
 
 void AMaster::Render()
 {   
-    objectManager->Render();
     renderer->Render();
-
-    float elapsedTime = Time::elapsedTime;
-
-    if (elapsedTime >= printTime)
-    {
-        Time::PrintTime();
-        printTime = elapsedTime + 0.5f;
-    }
+    objectManager->Render();
 
     // Swap the front and back buffers
     glfwSwapBuffers(renderer->window);

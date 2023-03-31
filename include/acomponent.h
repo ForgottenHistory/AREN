@@ -21,7 +21,6 @@ public:
 
     void SetOwner(AObject *_owner)
     {
-        std::cout << "Setting owner: " << _owner << std::endl;
         owner = _owner;
     }
 
@@ -39,11 +38,9 @@ public:
     ATransform(const glm::vec3 &position = glm::vec3(0.0f),
                const glm::vec3 &rotation = glm::vec3(0.0f),
                const glm::vec3 &scale = glm::vec3(1.0f));
-    ATransform(const glm::vec3 &position = glm::vec3(0.0f),
-               const glm::vec3 &rotation = glm::vec3(0.0f));
-    ATransform(const glm::vec3 &position = glm::vec3(0.0f));
 
     // Getters
+    glm::mat4 GetModelMatrix() const;
     const glm::vec3 &GetPosition() const;
     const glm::vec3 &GetRotation() const;
     const glm::vec3 &GetScale() const;

@@ -1,5 +1,7 @@
 #include "acomponent.h"
 #include <aobject.h>
+#include <amaster.h>
+#include <render/arenderer.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TRANSFORM COMPONENT
@@ -12,20 +14,23 @@ ATransform::ATransform(const glm::vec3 &position, const glm::vec3 &rotation, con
     this->scale = scale;
 }
 
-ATransform::ATransform(const glm::vec3 &position, const glm::vec3 &rotation)
+glm::mat4 ATransform::GetModelMatrix() const
 {
-    this->position = position;
-    this->rotation = rotation;
-    scale = glm::vec3(1.0f, 1.0f, 1.0f);;
-}
+    glm::mat4 model = glm::mat4(1.0f);
 
-ATransform::ATransform(const glm::vec3 &position)
-{
-    this->position = position;
-    rotation = glm::vec3(0.0f, 0.0f, 0.0f);
-    scale = glm::vec3(1.0f, 1.0f, 1.0f);
-}
+    // Apply translation
+    model = glm::translate(model, position);
 
+    // Apply rotation
+    model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+    // Apply scale
+    model = glm::scale(model, scale);
+
+    return model;
+}
 
 const glm::vec3 &ATransform::GetPosition() const
 {
@@ -70,6 +75,11 @@ void ACamera::Update()
 {
     UpdateViewMatrix();
     UpdateProjectionMatrix();
+
+    float deltaTime = Time::deltaTime;
+    glm::vec3 rot = owner->GetComponent<ATransform>()->GetRotation();
+    rot.y += deltaTime * 10.0f;
+    owner->GetComponent<ATransform>()->SetRotation(rot);
 }
 
 const glm::mat4 &ACamera::GetViewMatrix() const
@@ -85,18 +95,20 @@ const glm::mat4 &ACamera::GetProjectionMatrix() const
 void ACamera::UpdateViewMatrix()
 {
     // Retrieve position, rotation from the ATransform component
-
-    std::cout << "Owner pointer: " << owner << std::endl;
-
     const glm::vec3 &position = owner->GetComponent<ATransform>()->GetPosition();
     const glm::vec3 &rotation = owner->GetComponent<ATransform>()->GetRotation();
 
-    // Calculate direction vector based on rotation
-    glm::vec3 direction;
-    direction.x = cos(glm::radians(rotation.y)) * cos(glm::radians(rotation.x));
-    direction.y = sin(glm::radians(rotation.x));
-    direction.z = sin(glm::radians(rotation.y)) * cos(glm::radians(rotation.x));
-    direction = glm::normalize(direction);
+    // Create a rotation matrix based on the Euler angles
+    glm::mat4 rotMatrix = glm::mat4(1.0f);
+    rotMatrix = glm::rotate(rotMatrix, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    rotMatrix = glm::rotate(rotMatrix, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    rotMatrix = glm::rotate(rotMatrix, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+    // Default forward vector
+    glm::vec4 forward(0.0f, 0.0f, -1.0f, 1.0f);
+
+    // Calculate the direction vector using the rotation matrix
+    glm::vec3 direction = glm::normalize(glm::vec3(rotMatrix * forward));
 
     // Calculate the up vector
     glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -133,48 +145,51 @@ AMeshComponent::~AMeshComponent()
     glDeleteBuffers(1, &EBO);
 }
 
-void AMeshComponent::SetVertices(const std::vector<glm::vec3> &_vertices)
+void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices)
 {
     vertices = _vertices;
-}
-
-const std::vector<glm::vec3> &AMeshComponent::GetVertices() const
-{
-    return vertices;
 
     glBindVertexArray(VAO);
+
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), vertices.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void *)0);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
     glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
 
-void AMeshComponent::SetIndices(const std::vector<unsigned int> &_indices)
+void AMeshComponent::SetIndices(const std::vector<unsigned int>& _indices)
 {
-    indices = indices;
+    indices = _indices;
 
     glBindVertexArray(VAO);
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
-    glBindVertexArray(0);
-}
 
-const std::vector<unsigned int> &AMeshComponent::GetIndices() const
-{
-    return indices;
-}
-
-void AMeshComponent::Render()
-{
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 
 void AMeshComponent::Update()
 {
-    // Implement MeshComponent-specific Update logic
+
+}
+
+void AMeshComponent::Render()
+{
+    ARenderer* renderer = AMaster::GetInstance().GetRenderer();
+    glUseProgram(renderer->shaderProgram);
+
+    GLint modelLoc = glGetUniformLocation(AMaster::GetInstance().GetRenderer()->shaderProgram, "model");
+    glm::mat4 modelMatrix = owner->GetComponent<ATransform>()->GetModelMatrix();
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+
+    glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

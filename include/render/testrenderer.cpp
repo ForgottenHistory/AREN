@@ -1,102 +1,94 @@
-#include "render/arenderer.h"
+#include "render/testrenderer.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <cmath>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <time.h>
-#include <acomponent.h>
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  CONSTRUCTOR / DESTRUCTOR
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-ARenderer::ARenderer()
+int TestRenderer::Main()
 {
-    std::cout << "ARenderer created" << std::endl;
-    Init();
-}
-ARenderer::~ARenderer()
-{
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  INITIALIZATION
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void ARenderer::Init()
-{
-    // Initialize GLFW
     if (!glfwInit())
     {
         std::cerr << "Failed to initialize GLFW" << std::endl;
-        return;
+        return -1;
     }
 
-    // Create a window
-    window = glfwCreateWindow(1280, 720, "AREN", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(1280, 720, "Simple Triangle", nullptr, nullptr);
     if (!window)
     {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
-        return;
+        return -1;
     }
 
-    // Set the window's OpenGL context
     glfwMakeContextCurrent(window);
 
-    // Initialize GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cerr << "Failed to initialize GLAD" << std::endl;
         glfwTerminate();
-        return;
+        return -1;
     }
 
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
 
-    // Load shaders
     vertexShaderSource = ReadFile("shaders/vertex_shader.glsl");
     fragmentShaderSource = ReadFile("shaders/fragment_shader.glsl");
     GLuint vertexShader = LoadShader(GL_VERTEX_SHADER, vertexShaderSource);
     GLuint fragmentShader = LoadShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+    GLuint shaderProgram = CreateShaderProgram(vertexShader, fragmentShader);
 
-    // Create and link the shader program
-    shaderProgram = CreateShaderProgram(vertexShader, fragmentShader);
-
-    // Clean up shader objects
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
-}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  RENDERING
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    GLfloat vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.0f,  0.5f, 0.0f
+    };
 
-void ARenderer::Render()
-{
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    GLuint VAO, VBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
 
-    glUseProgram(shaderProgram);
+    glBindVertexArray(VAO);
 
-    if (camera) {
-        GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
-        GLint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
-        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+    while (!glfwWindowShouldClose(window))
+    {
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glUseProgram(shaderProgram);
+
+        glBindVertexArray(VAO);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(0);
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
     }
+
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+
+    glfwTerminate();
+    return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  SHADERS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-GLuint ARenderer::CreateShaderProgram(GLuint vertexShader, GLuint fragmentShader)
+GLuint TestRenderer::CreateShaderProgram(GLuint vertexShader, GLuint fragmentShader)
 {
     // Create the shader program object
     GLuint shaderProgram = glCreateProgram();
@@ -137,7 +129,7 @@ GLuint ARenderer::CreateShaderProgram(GLuint vertexShader, GLuint fragmentShader
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-GLuint ARenderer::LoadShader(GLenum shaderType, std::string &shaderSource)
+GLuint TestRenderer::LoadShader(GLenum shaderType, std::string &shaderSource)
 {
     // Create a shader object
     GLuint shader = glCreateShader(shaderType);
@@ -178,7 +170,7 @@ GLuint ARenderer::LoadShader(GLenum shaderType, std::string &shaderSource)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::string ARenderer::ReadFile(const char *filePath)
+std::string TestRenderer::ReadFile(const char *filePath)
 {
     std::string content;
     std::ifstream fileStream(filePath, std::ios::in);
