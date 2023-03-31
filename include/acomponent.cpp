@@ -12,6 +12,21 @@ ATransform::ATransform(const glm::vec3 &position, const glm::vec3 &rotation, con
     this->scale = scale;
 }
 
+ATransform::ATransform(const glm::vec3 &position, const glm::vec3 &rotation)
+{
+    this->position = position;
+    this->rotation = rotation;
+    scale = glm::vec3(1.0f, 1.0f, 1.0f);;
+}
+
+ATransform::ATransform(const glm::vec3 &position)
+{
+    this->position = position;
+    rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+    scale = glm::vec3(1.0f, 1.0f, 1.0f);
+}
+
+
 const glm::vec3 &ATransform::GetPosition() const
 {
     return position;
@@ -72,14 +87,6 @@ void ACamera::UpdateViewMatrix()
     // Retrieve position, rotation from the ATransform component
 
     std::cout << "Owner pointer: " << owner << std::endl;
-    if (owner)
-    {
-        std::cout << "Owner name: " << owner->name << std::endl;
-    }
-    else
-    {
-        std::cout << "Owner is nullptr" << std::endl;
-    }
 
     const glm::vec3 &position = owner->GetComponent<ATransform>()->GetPosition();
     const glm::vec3 &rotation = owner->GetComponent<ATransform>()->GetRotation();
