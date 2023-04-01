@@ -5,6 +5,8 @@
 #include <time.h>
 #include "render/testrenderer.h"
 
+#include "debug/test.h"
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 AMaster::AMaster()
@@ -28,6 +30,7 @@ AMaster::AMaster()
     mainCamera->AddComponent(camera); 
     
     ACube* cube = objectManager->CreateCube();
+    cube->AddComponent( new TestMovement() );
 }
 
 AMaster::~AMaster()
