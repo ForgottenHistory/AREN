@@ -75,11 +75,6 @@ void ACamera::Update()
 {
     UpdateViewMatrix();
     UpdateProjectionMatrix();
-
-    float deltaTime = Time::deltaTime;
-    glm::vec3 rot = owner->GetComponent<ATransform>()->GetRotation();
-    rot.y += deltaTime * 10.0f;
-    owner->GetComponent<ATransform>()->SetRotation(rot);
 }
 
 const glm::mat4 &ACamera::GetViewMatrix() const
@@ -186,6 +181,10 @@ void AMeshComponent::Render()
     GLint modelLoc = glGetUniformLocation(AMaster::GetInstance().GetRenderer()->shaderProgram, "model");
     glm::mat4 modelMatrix = owner->GetComponent<ATransform>()->GetModelMatrix();
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+
+    renderer->SetShaderUniform("u_DiffuseColor", material.GetDiffuseColor());
+    renderer->SetShaderUniform("u_SpecularColor", material.GetSpecularColor());
+    renderer->SetShaderUniform("u_Shininess", material.GetShininess());
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

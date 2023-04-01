@@ -81,6 +81,26 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+class Material {
+public:
+    Material() {}
+    ~Material() {}
+
+    void SetDiffuseColor(const glm::vec3& _diffuseColor) { diffuseColor = _diffuseColor; }
+    const glm::vec3& GetDiffuseColor() const { return diffuseColor; }
+
+    void SetSpecularColor(const glm::vec3& _specularColor) { specularColor = _specularColor; }
+    const glm::vec3& GetSpecularColor() const { return specularColor; }
+
+    void SetShininess(const float _shininess) { shininess = _shininess; }
+    const float GetShininess() const { return shininess; }
+
+private:
+    glm::vec3 diffuseColor = glm::vec3(1.0f);
+    glm::vec3 specularColor;
+    float shininess;
+};
+
 class AMeshComponent : public Component {
 public:
     AMeshComponent();
@@ -102,4 +122,8 @@ private:
 
     // OpenGL-specific data
     GLuint VAO, VBO, EBO;
+
+    Material material;
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -25,6 +25,9 @@ public:
 
     void SetCamera(ACamera* _camera) { camera = _camera; }
 
+    void SetShaderUniform(const std::string &name, const glm::vec3 &value);
+    void SetShaderUniform(const std::string &name, float value);
+
     ///////////////////////////////////////////////////////////////////////
     //  VARIABLES
     ///////////////////////////////////////////////////////////////////////

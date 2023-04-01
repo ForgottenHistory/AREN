@@ -94,6 +94,20 @@ void ARenderer::Render()
 //  SHADERS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void ARenderer::SetShaderUniform(const std::string &name, const glm::vec3 &value)
+{
+    GLint location = glGetUniformLocation(shaderProgram, name.c_str());
+    glUniform3f(location, value.x, value.y, value.z);
+}
+
+void ARenderer::SetShaderUniform(const std::string &name, float value)
+{
+    GLint location = glGetUniformLocation(shaderProgram, name.c_str());
+    glUniform1f(location, value);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 GLuint ARenderer::CreateShaderProgram(GLuint vertexShader, GLuint fragmentShader)
 {
     // Create the shader program object
