@@ -47,6 +47,26 @@ const glm::vec3 &ATransform::GetScale() const
     return scale;
 }
 
+glm::vec3 ATransform::GetForward() const
+{
+    glm::vec3 forward;
+    forward.x = sin(glm::radians(rotation.y)) * cos(glm::radians(rotation.x));
+    forward.y = -sin(glm::radians(rotation.x));
+    forward.z = cos(glm::radians(rotation.y)) * cos(glm::radians(rotation.x));
+    return glm::normalize(forward);
+}
+
+
+glm::vec3 ATransform::GetRight() const
+{
+    return glm::normalize(glm::cross(GetForward(), glm::vec3(0.0f, 1.0f, 0.0f)));
+}
+
+glm::vec3 ATransform::GetUp() const
+{
+    return glm::normalize(glm::cross(GetRight(), GetForward()));
+}
+
 void ATransform::SetPosition(const glm::vec3 &_position)
 {
     position = _position;

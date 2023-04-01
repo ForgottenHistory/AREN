@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include <glad/glad.h> 
+#include <glad/glad.h>
 #include <glfw/glfw3.h>
 #include <glmpch.h>
 
@@ -43,6 +43,12 @@ public:
     const glm::vec3 &GetRotation() const;
     const glm::vec3 &GetScale() const;
 
+    glm::vec3 GetForward() const;
+
+    glm::vec3 GetRight() const;
+
+    glm::vec3 GetUp() const;
+
     // Setters
     void SetPosition(const glm::vec3 &position);
     void SetRotation(const glm::vec3 &rotation);
@@ -81,16 +87,17 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class Material {
+class Material
+{
 public:
     Material() {}
     ~Material() {}
 
-    void SetDiffuseColor(const glm::vec3& _diffuseColor) { diffuseColor = _diffuseColor; }
-    const glm::vec3& GetDiffuseColor() const { return diffuseColor; }
+    void SetDiffuseColor(const glm::vec3 &_diffuseColor) { diffuseColor = _diffuseColor; }
+    const glm::vec3 &GetDiffuseColor() const { return diffuseColor; }
 
-    void SetSpecularColor(const glm::vec3& _specularColor) { specularColor = _specularColor; }
-    const glm::vec3& GetSpecularColor() const { return specularColor; }
+    void SetSpecularColor(const glm::vec3 &_specularColor) { specularColor = _specularColor; }
+    const glm::vec3 &GetSpecularColor() const { return specularColor; }
 
     void SetShininess(const float _shininess) { shininess = _shininess; }
     const float GetShininess() const { return shininess; }
@@ -101,16 +108,17 @@ private:
     float shininess;
 };
 
-class AMeshComponent : public Component {
+class AMeshComponent : public Component
+{
 public:
     AMeshComponent();
     ~AMeshComponent();
 
-    void SetVertices(const std::vector<glm::vec3>& _vertices);
-    const std::vector<glm::vec3>& GetVertices() const;
+    void SetVertices(const std::vector<glm::vec3> &_vertices);
+    const std::vector<glm::vec3> &GetVertices() const;
 
-    void SetIndices(const std::vector<unsigned int>& _indices);
-    const std::vector<unsigned int>& GetIndices() const;
+    void SetIndices(const std::vector<unsigned int> &_indices);
+    const std::vector<unsigned int> &GetIndices() const;
 
     // Override the Update function if needed
     void Update() override;
