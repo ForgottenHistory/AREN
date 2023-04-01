@@ -116,14 +116,14 @@ public:
     void Update() override;
     void Render();
 
+    Material material;
+
 private:
     std::vector<glm::vec3> vertices;
     std::vector<unsigned int> indices;
 
     // OpenGL-specific data
     GLuint VAO, VBO, EBO;
-
-    Material material;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

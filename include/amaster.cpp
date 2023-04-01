@@ -3,6 +3,7 @@
 #include <amanager.h>
 #include <render/arenderer.h>
 #include <time.h>
+#include "acomponent.h" 
 #include "render/testrenderer.h"
 
 #include "debug/test.h"
@@ -27,10 +28,12 @@ AMaster::AMaster()
 
     ACamera* camera = new ACamera();
     renderer->SetCamera(camera);
+    camera->SetOwner(mainCamera);
     mainCamera->AddComponent(camera); 
     
     ACube* cube = objectManager->CreateCube();
     cube->AddComponent( new TestMovement() );
+    cube->GetComponent<AMeshComponent>()->material.SetDiffuseColor(glm::vec3(1.0f, 0.0f, 0.0f));
 }
 
 AMaster::~AMaster()
