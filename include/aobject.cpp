@@ -1,6 +1,35 @@
 #include "aobject.h"
 #include "acomponent.h"
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+std::vector<glm::vec3> AObject::CalculateNormals(const std::vector<glm::vec3>& vertices, const std::vector<unsigned int>& indices)
+{
+    std::vector<glm::vec3> normals(vertices.size(), glm::vec3(0.0f));
+
+    for (size_t i = 0; i < indices.size(); i += 3)
+    {
+        glm::vec3 v1 = vertices[indices[i + 1]] - vertices[indices[i]];
+        glm::vec3 v2 = vertices[indices[i + 2]] - vertices[indices[i]];
+        glm::vec3 normal = glm::normalize(glm::cross(v1, v2));
+
+        normals[indices[i]] += normal;
+        normals[indices[i + 1]] += normal;
+        normals[indices[i + 2]] += normal;
+    }
+
+    for (glm::vec3& normal : normals)
+    {
+        normal = glm::normalize(normal);
+    }
+
+    return normals;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CUBE
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 ACube::ACube()
 {
     // Create a mesh component and set the cube-specific vertex and index data
@@ -24,7 +53,9 @@ ACube::ACube()
         0, 3, 7, 7, 4, 0,
         1, 2, 6, 6, 5, 1};
 
-    meshComponent->SetVertices(vertices);
+    std::vector<glm::vec3> normals = CalculateNormals(vertices, indices);
+
+    meshComponent->SetVertices(vertices, normals);
     meshComponent->SetIndices(indices);
 
     // Add the mesh component to the cube object
@@ -70,3 +101,5 @@ void ACube::Render()
         meshComponent->Render();
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

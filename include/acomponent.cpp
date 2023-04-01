@@ -176,6 +176,39 @@ void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices)
     glBindVertexArray(0);
 }
 
+struct Vertex {
+    glm::vec3 position;
+    glm::vec3 normal;
+};
+
+void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals)
+{
+    assert(_vertices.size() == _normals.size());
+
+    std::vector<Vertex> vertexData(_vertices.size());
+    for (size_t i = 0; i < _vertices.size(); ++i)
+    {
+        vertexData[i].position = _vertices[i];
+        vertexData[i].normal = _normals[i];
+    }
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(Vertex), vertexData.data(), GL_STATIC_DRAW);
+
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
+    glEnableVertexAttribArray(0);
+
+    // Normal attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+    glEnableVertexAttribArray(1);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+}
+
 void AMeshComponent::SetIndices(const std::vector<unsigned int>& _indices)
 {
     indices = _indices;

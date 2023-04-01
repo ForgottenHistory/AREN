@@ -51,6 +51,8 @@ public:
 
 protected:
     ATransform *transform = nullptr;
+
+    std::vector<glm::vec3> CalculateNormals(const std::vector<glm::vec3>& vertices, const std::vector<unsigned int>& indices);
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

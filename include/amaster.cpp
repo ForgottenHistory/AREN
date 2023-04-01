@@ -5,6 +5,8 @@
 #include <time.h>
 #include "acomponent.h" 
 #include "render/testrenderer.h"
+#include "acolor.h"
+
 #include "components/cameracontroller.h"
 
 #include "debug/test.h"
@@ -13,12 +15,13 @@
 
 AMaster::AMaster()
 {
-        // Create a test renderer
+    // Create a test renderer
     //TestRenderer* testRenderer = new TestRenderer();
     //testRenderer->Main();
 
     renderer = new ARenderer();
     objectManager = new AObjectManager();
+    ColorManager& colorManager = ColorManager::getInstance();
 
     // Create a camera
     mainCamera = objectManager->CreateObject();
@@ -36,19 +39,16 @@ AMaster::AMaster()
     ACube* floor = objectManager->CreateCube();
     floor->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
     floor->GetComponent<ATransform>()->SetScale(glm::vec3(10.0f, 1.0f, 10.0f));
-    floor->GetComponent<AMeshComponent>()->material.SetDiffuseColor(glm::vec3( 0.647059f, 0.164706f, 0.164706f));
-
-    // brown color in rgb?
-    // 0.647059, 0.164706, 0.164706
+    floor->GetComponent<AMeshComponent>()->material.SetDiffuseColor(colorManager.GetColor(ColorManager::BROWN));
 
     ACube* cube = objectManager->CreateCube();
     //cube->AddComponent( new TestMovement() );
     cube->GetComponent<ATransform>()->SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
-    cube->GetComponent<AMeshComponent>()->material.SetDiffuseColor(glm::vec3(1.0f, 0.0f, 0.0f));
+    cube->GetComponent<AMeshComponent>()->material.SetDiffuseColor(colorManager.GetColor(ColorManager::RED));
 
     ACube* cube2 = objectManager->CreateCube();
     cube2->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
-    cube2->GetComponent<AMeshComponent>()->material.SetDiffuseColor(glm::vec3(0.0f, 0.0f, 1.0f));
+    cube2->GetComponent<AMeshComponent>()->material.SetDiffuseColor(colorManager.GetColor(ColorManager::BLUE));
 }
 
 AMaster::~AMaster()

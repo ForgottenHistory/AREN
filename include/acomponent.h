@@ -22,7 +22,6 @@ public:
         owner = _owner;
     }
 
-protected:
     AObject *owner;
 };
 
@@ -104,8 +103,8 @@ public:
 
 private:
     glm::vec3 diffuseColor = glm::vec3(1.0f);
-    glm::vec3 specularColor;
-    float shininess;
+    glm::vec3 specularColor = glm::vec3(1.0f);
+    float shininess = 0.2f;
 };
 
 class AMeshComponent : public Component
@@ -115,6 +114,8 @@ public:
     ~AMeshComponent();
 
     void SetVertices(const std::vector<glm::vec3> &_vertices);
+    void SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals);
+
     const std::vector<glm::vec3> &GetVertices() const;
 
     void SetIndices(const std::vector<unsigned int> &_indices);

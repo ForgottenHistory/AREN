@@ -6,6 +6,7 @@
 #include <glmpch.h>
 #include <time.h>
 #include <acomponent.h>
+#include "aobject.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  CONSTRUCTOR / DESTRUCTOR
@@ -53,8 +54,10 @@ void ARenderer::Init()
         return;
     }
 
-    glDisable(GL_DEPTH_TEST);
+    // glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
+
+    glEnable(GL_DEPTH_TEST);
 
     // Load shaders
     vertexShaderSource = ReadFile("shaders/vertex_shader.glsl");
@@ -77,13 +80,30 @@ void ARenderer::Init()
 void ARenderer::Render()
 {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(shaderProgram);
 
-    if (camera) {
+    if (camera)
+    {
         GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
         GLint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
+
+        glm::vec3 cameraPos = camera->owner->GetComponent<ATransform>()->GetPosition();
+
+        // Set light uniforms
+        GLint sunPosLoc = glGetUniformLocation(shaderProgram, "u_Sun.position");
+        GLint sunAmbientLoc = glGetUniformLocation(shaderProgram, "u_Sun.ambient");
+        GLint sunDiffuseLoc = glGetUniformLocation(shaderProgram, "u_Sun.diffuse");
+        GLint sunSpecularLoc = glGetUniformLocation(shaderProgram, "u_Sun.specular");
+        glUniform3f(sunPosLoc, 20.0f, 20.0f, 20.0f);
+        glUniform3f(sunAmbientLoc, 0.1f, 0.1f, 0.1f);
+        glUniform3f(sunDiffuseLoc, 1.0f, 0.9f, 0.7f);
+        glUniform3f(sunSpecularLoc, 1.0f, 1.0f, 1.0f);
+
+        // Set view position uniform
+        GLint viewPosLoc = glGetUniformLocation(shaderProgram, "u_ViewPos");
+        glUniform3f(viewPosLoc, cameraPos.x, cameraPos.y, cameraPos.z);
 
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
         glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
