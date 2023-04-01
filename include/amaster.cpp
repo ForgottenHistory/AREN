@@ -5,7 +5,7 @@
 #include <time.h>
 #include "acomponent.h" 
 #include "render/testrenderer.h"
-#include "components/CameraController.h"
+#include "components/cameracontroller.h"
 
 #include "debug/test.h"
 

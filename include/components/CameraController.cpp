@@ -1,4 +1,4 @@
-#include "CameraController.h"
+#include "cameracontroller.h"
 #include "render/arenderer.h"
 #include "amaster.h"
 #include "time.h"
