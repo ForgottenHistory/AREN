@@ -1,9 +1,9 @@
 #pragma once
-#ifndef TEST_H
-#define TEST_H
+#include "acomponent.h"
 
-// Declare the square function
-int fname( int x, int y, int z );
+class TestMovement : public Component {
+public:
+    ~TestMovement();
 
-#endif
-
+    void Update() override;
+};
