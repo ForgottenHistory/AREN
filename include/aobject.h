@@ -11,10 +11,11 @@ public:
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     template <typename T>
-    void AddComponent(T *component)
+    T* AddComponent(T *component)
     {
         components[typeid(T)] = component;
         component->SetOwner(this);
+        return component;
     }
 
     template <typename T>
@@ -33,6 +34,14 @@ public:
         for (auto &it : components)
         {
             it.second->Update();
+        }
+    }
+
+        void RenderComponents()
+    {
+        for (auto &it : components)
+        {
+            it.second->Render();
         }
     }
 

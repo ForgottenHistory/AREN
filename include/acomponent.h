@@ -16,6 +16,7 @@ public:
     virtual ~Component() {}
 
     virtual void Update() {}
+    virtual void Render() {}
 
     void SetOwner(AObject *_owner)
     {

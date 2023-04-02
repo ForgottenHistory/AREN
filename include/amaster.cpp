@@ -3,10 +3,11 @@
 #include <amanager.h>
 #include <render/arenderer.h>
 #include <time.h>
-#include "acomponent.h" 
+#include "acomponent.h"
 #include "render/testrenderer.h"
 #include "acolor.h"
 
+#include "render/light.h"
 #include "components/cameracontroller.h"
 
 #include "debug/test.h"
@@ -15,41 +16,76 @@
 
 AMaster::AMaster()
 {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Create a test renderer
-    //TestRenderer* testRenderer = new TestRenderer();
-    //testRenderer->Main();
+    // TestRenderer* testRenderer = new TestRenderer();
+    // testRenderer->Main();
 
     renderer = new ARenderer();
     objectManager = new AObjectManager();
-    ColorManager& colorManager = ColorManager::getInstance();
+    ColorManager &colorManager = ColorManager::getInstance();
 
-    // Create a camera
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // CREATE CAMERA
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     mainCamera = objectManager->CreateObject();
-    ATransform* trans = new ATransform();
-    trans->SetPosition( glm::vec3(1.0f, 0.0f, 2.0f) );
-    mainCamera->AddComponent(trans);
+    ATransform *cameraTrans = new ATransform();
+    cameraTrans->SetPosition(glm::vec3(1.0f, 0.0f, 2.0f));
+    mainCamera->AddComponent(cameraTrans);
 
-    ACamera* camera = new ACamera();
+    ACamera *camera = new ACamera();
     renderer->SetCamera(camera);
-    mainCamera->AddComponent(camera); 
-    
+    mainCamera->AddComponent(camera);
+
     CameraController *cameraController = new CameraController();
     mainCamera->AddComponent(cameraController);
 
-    ACube* floor = objectManager->CreateCube();
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // CREATE LIGHTS
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Set directional light values
+    glm::vec3 sunPosition = glm::vec3(20.0f, 20.0f, 20.0f);
+    glm::vec3 sunDiffuse = glm::vec3( 1.0f, 0.9f, 0.7f);
+    glm::vec3 sunAmbient = glm::vec3( 0.1f, 0.1f, 0.1f);
+    glm::vec3 sunSpecular = glm::vec3( 1.0f, 1.0f, 1.0f);
+
+    // Uncomment to use matte light
+    //sunDiffuse = colorManager.GetColor(ColorManager::WHITE);
+    //sunAmbient = colorManager.GetColor(ColorManager::WHITE);
+    //sunSpecular = colorManager.GetColor(ColorManager::WHITE);
+
+    AObject *light = objectManager->CreateObject();
+    ADirectionalLight *directionalLight = new ADirectionalLight(sunDiffuse,
+                                                                sunAmbient,
+                                                                sunSpecular);
+    light->AddComponent(directionalLight);
+
+    ATransform *sunTrans = new ATransform();
+    sunTrans->SetPosition(sunPosition);
+    light->AddComponent(sunTrans);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // CREATE CUBES
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ACube *floor = objectManager->CreateCube();
     floor->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
     floor->GetComponent<ATransform>()->SetScale(glm::vec3(10.0f, 1.0f, 10.0f));
     floor->GetComponent<AMeshComponent>()->material.SetDiffuseColor(colorManager.GetColor(ColorManager::BROWN));
 
-    ACube* cube = objectManager->CreateCube();
-    //cube->AddComponent( new TestMovement() );
+    ACube *cube = objectManager->CreateCube();
+    // cube->AddComponent( new TestMovement() );
     cube->GetComponent<ATransform>()->SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
     cube->GetComponent<AMeshComponent>()->material.SetDiffuseColor(colorManager.GetColor(ColorManager::RED));
 
-    ACube* cube2 = objectManager->CreateCube();
+    ACube *cube2 = objectManager->CreateCube();
     cube2->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
     cube2->GetComponent<AMeshComponent>()->material.SetDiffuseColor(colorManager.GetColor(ColorManager::BLUE));
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 AMaster::~AMaster()
 {
@@ -89,7 +125,7 @@ void AMaster::Update()
 {
     Time::UpdateTime();
     objectManager->Update();
-    
+
     float elapsedTime = Time::elapsedTime;
 
     if (elapsedTime >= printTime)
@@ -109,7 +145,7 @@ void AMaster::SecondUpdate()
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMaster::Render()
-{   
+{
     renderer->Render();
     objectManager->Render();
 

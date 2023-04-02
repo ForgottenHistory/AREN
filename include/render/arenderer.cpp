@@ -91,16 +91,6 @@ void ARenderer::Render()
 
         glm::vec3 cameraPos = camera->owner->GetComponent<ATransform>()->GetPosition();
 
-        // Set light uniforms
-        GLint sunPosLoc = glGetUniformLocation(shaderProgram, "u_Sun.position");
-        GLint sunAmbientLoc = glGetUniformLocation(shaderProgram, "u_Sun.ambient");
-        GLint sunDiffuseLoc = glGetUniformLocation(shaderProgram, "u_Sun.diffuse");
-        GLint sunSpecularLoc = glGetUniformLocation(shaderProgram, "u_Sun.specular");
-        glUniform3f(sunPosLoc, 20.0f, 20.0f, 20.0f);
-        glUniform3f(sunAmbientLoc, 0.1f, 0.1f, 0.1f);
-        glUniform3f(sunDiffuseLoc, 1.0f, 0.9f, 0.7f);
-        glUniform3f(sunSpecularLoc, 1.0f, 1.0f, 1.0f);
-
         // Set view position uniform
         GLint viewPosLoc = glGetUniformLocation(shaderProgram, "u_ViewPos");
         glUniform3f(viewPosLoc, cameraPos.x, cameraPos.y, cameraPos.z);

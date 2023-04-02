@@ -61,12 +61,16 @@ void AObjectManager::SecondUpdate()
 
 void AObjectManager::Render()
 {   
+    // Render components
     for( int objectIndex = 0; objectIndex < objects.size(); objectIndex++ )
     {
-        if( objects[objectIndex]->GetComponent<AMeshComponent>() != nullptr ){
-            AMeshComponent* meshComponent = objects[objectIndex]->GetComponent<AMeshComponent>();
-            meshComponent->Render();
-        }
+        objects[objectIndex]->RenderComponents();
+    }
+
+    // Render objects
+    for( int objectIndex = 0; objectIndex < objects.size(); objectIndex++ )
+    {
+        objects[objectIndex]->Render();
     }
 }
 
