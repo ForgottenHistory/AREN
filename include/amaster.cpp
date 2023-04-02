@@ -8,6 +8,7 @@
 #include "acolor.h"
 
 #include "render/light.h"
+#include "components/movewithtime.h"
 #include "components/cameracontroller.h"
 
 #include "debug/test.h"
@@ -23,7 +24,7 @@ AMaster::AMaster()
 
     renderer = new ARenderer();
     objectManager = new AObjectManager();
-    ColorManager &colorManager = ColorManager::getInstance();
+    ColorManager &colorManager = ColorManager::GetInstance();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // CREATE CAMERA
@@ -65,6 +66,14 @@ AMaster::AMaster()
     ATransform *sunTrans = new ATransform();
     sunTrans->SetPosition(sunPosition);
     light->AddComponent(sunTrans);
+
+    MoveWithTime* moveWithTime = new MoveWithTime( MoveWithTime::MoveType::SINTIME );
+    moveWithTime->lockX = true;
+    moveWithTime->lockY = false;
+    moveWithTime->lockZ = true;
+    moveWithTime->speed = 0.5f;
+    moveWithTime->amplitude = 20.0f;
+    light->AddComponent(moveWithTime);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // CREATE CUBES

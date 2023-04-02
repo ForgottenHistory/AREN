@@ -20,7 +20,7 @@ public:
         NUM_COLORS
     };
 
-    static ColorManager &getInstance()
+    static ColorManager &GetInstance()
     {
         static ColorManager instance; // create the singleton instance
         return instance;
