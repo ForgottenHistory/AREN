@@ -1,4 +1,4 @@
-#include "render/arenderer.h"
+#include "arenderer.h"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -114,6 +114,35 @@ void ARenderer::SetShaderUniform(const std::string &name, float value)
 {
     GLint location = glGetUniformLocation(shaderProgram, name.c_str());
     glUniform1f(location, value);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+GLuint ARenderer::GetShaderProgram(const std::string &vertexShaderPath, const std::string &fragmentShaderPath) {
+    // Check if the shader program is already cached
+    auto key = std::make_pair(vertexShaderPath, fragmentShaderPath);
+    auto it = shaderCache.find(key);
+    if (it != shaderCache.end()) {
+        return it->second;
+    }
+
+    // Load shaders
+    std::string vertexShaderSource = ReadFile(vertexShaderPath.c_str());
+    std::string fragmentShaderSource = ReadFile(fragmentShaderPath.c_str());
+    GLuint vertexShader = LoadShader(GL_VERTEX_SHADER, vertexShaderSource);
+    GLuint fragmentShader = LoadShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+
+    // Create and link the shader program
+    GLuint shaderProgram = CreateShaderProgram(vertexShader, fragmentShader);
+
+    // Don't forget to clean up the shader objects after linking
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    // Cache the shader program
+    shaderCache[key] = shaderProgram;
+
+    return shaderProgram;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

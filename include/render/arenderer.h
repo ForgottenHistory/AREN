@@ -3,6 +3,9 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 #include <glmpch.h>
+#include <map>
+#include <string>
+
 
 class ACamera;
 
@@ -27,6 +30,8 @@ public:
 
     void SetShaderUniform(const std::string &name, const glm::vec3 &value);
     void SetShaderUniform(const std::string &name, float value);
+
+     GLuint GetShaderProgram(const std::string &vertexShaderPath, const std::string &fragmentShaderPath);
 
     ///////////////////////////////////////////////////////////////////////
     //  VARIABLES
@@ -59,5 +64,7 @@ private:
     
     ACamera* camera = nullptr;
     
+    std::map<std::pair<std::string, std::string>, GLuint> shaderCache;
+
     ///////////////////////////////////////////////////////////////////////
 };
