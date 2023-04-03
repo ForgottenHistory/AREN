@@ -50,7 +50,8 @@
         "ctime": "cpp",
         "iomanip": "cpp",
         "sstream": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "map": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled",
     "cmake.configureOnOpen": false
