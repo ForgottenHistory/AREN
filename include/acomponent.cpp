@@ -245,3 +245,27 @@ void AMeshComponent::Render()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Material::SetVertexShader(const std::string &_vertexShader)
+{
+    ARenderer* renderer = AMaster::GetInstance().GetRenderer();
+    vertexShader = _vertexShader;
+    shaderProgram = renderer->GetShaderProgram( vertexShader, fragmentShader );
+}
+
+void Material::SetFragmentShader(const std::string &_fragmentShader)
+{
+    ARenderer* renderer = AMaster::GetInstance().GetRenderer();
+    fragmentShader = _fragmentShader;
+    shaderProgram = renderer->GetShaderProgram( vertexShader, fragmentShader );
+}
+
+void Material::SetShaders(const std::string &_vertexShader, const std::string &_fragmentShader)
+{
+    ARenderer* renderer = AMaster::GetInstance().GetRenderer();
+    vertexShader = _vertexShader;
+    fragmentShader = _fragmentShader;
+    shaderProgram = renderer->GetShaderProgram( vertexShader, fragmentShader );
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

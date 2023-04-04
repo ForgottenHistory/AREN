@@ -118,17 +118,19 @@ void ARenderer::SetShaderUniform(const std::string &name, float value)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-GLuint ARenderer::GetShaderProgram(const std::string &vertexShaderPath, const std::string &fragmentShaderPath) {
+GLuint ARenderer::GetShaderProgram(const std::string &vertexShaderName, const std::string &fragmentShaderName)
+{
     // Check if the shader program is already cached
-    auto key = std::make_pair(vertexShaderPath, fragmentShaderPath);
+    auto key = std::make_pair(vertexShaderName, fragmentShaderName);
     auto it = shaderCache.find(key);
-    if (it != shaderCache.end()) {
+    if (it != shaderCache.end())
+    {
         return it->second;
     }
 
     // Load shaders
-    std::string vertexShaderSource = ReadFile(vertexShaderPath.c_str());
-    std::string fragmentShaderSource = ReadFile(fragmentShaderPath.c_str());
+    std::string vertexShaderSource = ReadFile(("shaders/" + vertexShaderName).c_str());
+    std::string fragmentShaderSource = ReadFile(("shaders/" + fragmentShaderName).c_str());
     GLuint vertexShader = LoadShader(GL_VERTEX_SHADER, vertexShaderSource);
     GLuint fragmentShader = LoadShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
 

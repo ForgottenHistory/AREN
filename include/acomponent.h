@@ -1,9 +1,10 @@
 #pragma once
-#include <iostream>
-#include <vector>
+#include <glmpch.h>
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
-#include <glmpch.h>
+#include <string>
+#include <vector>
+#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // COMPONENT BASE CLASS
@@ -102,9 +103,22 @@ public:
     void SetShininess(const float _shininess) { shininess = _shininess; }
     const float GetShininess() const { return shininess; }
 
+    void SetVertexShader(const std::string &_vertexShader);
+    const std::string &GetVertexShader() const { return vertexShader; }
+
+    void SetFragmentShader(const std::string &_fragmentShader);
+    const std::string &GetFragmentShader() const { return fragmentShader; }
+
+    void SetShaders(const std::string &_vertexShader, const std::string &_fragmentShader);
+
 private:
     glm::vec3 diffuseColor = glm::vec3(1.0f);
     glm::vec3 specularColor = glm::vec3(0.0f);
+
+    std::string vertexShader = "vertex_shader.glsl";
+    std::string fragmentShader = "fragment_shader.glsl";
+    GLuint shaderProgram = 0;
+
     float shininess = 1.0f;
 };
 
