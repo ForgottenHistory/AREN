@@ -151,6 +151,8 @@ AMeshComponent::AMeshComponent()
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
+
+    material = new AMaterial();
 }
 
 AMeshComponent::~AMeshComponent()
@@ -229,15 +231,18 @@ void AMeshComponent::Update()
 void AMeshComponent::Render()
 {
     ARenderer* renderer = AMaster::GetInstance().GetRenderer();
-    glUseProgram(renderer->shaderProgram);
+    if( material->GetShaderProgram() == 404 )
+        material->SetShaders( material->GetVertexShader(), material->GetFragmentShader() );
+
+    glUseProgram(material->GetShaderProgram());
 
     GLint modelLoc = glGetUniformLocation(AMaster::GetInstance().GetRenderer()->shaderProgram, "model");
     glm::mat4 modelMatrix = owner->GetComponent<ATransform>()->GetModelMatrix();
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
-    renderer->SetShaderUniform("u_DiffuseColor", material.GetDiffuseColor());
-    renderer->SetShaderUniform("u_SpecularColor", material.GetSpecularColor());
-    renderer->SetShaderUniform("u_Shininess", material.GetShininess());
+    renderer->SetShaderUniform("u_DiffuseColor", material->GetDiffuseColor());
+    renderer->SetShaderUniform("u_SpecularColor", material->GetSpecularColor());
+    renderer->SetShaderUniform("u_Shininess", material->GetShininess());
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
@@ -246,21 +251,26 @@ void AMeshComponent::Render()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Material::SetVertexShader(const std::string &_vertexShader)
+AMaterial::AMaterial()
+{
+    //SetShaders( vertexShader, fragmentShader );
+}
+
+void AMaterial::SetVertexShader(const std::string &_vertexShader)
 {
     ARenderer* renderer = AMaster::GetInstance().GetRenderer();
     vertexShader = _vertexShader;
     shaderProgram = renderer->GetShaderProgram( vertexShader, fragmentShader );
 }
 
-void Material::SetFragmentShader(const std::string &_fragmentShader)
+void AMaterial::SetFragmentShader(const std::string &_fragmentShader)
 {
     ARenderer* renderer = AMaster::GetInstance().GetRenderer();
     fragmentShader = _fragmentShader;
     shaderProgram = renderer->GetShaderProgram( vertexShader, fragmentShader );
 }
 
-void Material::SetShaders(const std::string &_vertexShader, const std::string &_fragmentShader)
+void AMaterial::SetShaders(const std::string &_vertexShader, const std::string &_fragmentShader)
 {
     ARenderer* renderer = AMaster::GetInstance().GetRenderer();
     vertexShader = _vertexShader;

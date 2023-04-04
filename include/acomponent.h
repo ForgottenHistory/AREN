@@ -88,11 +88,11 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class Material
+class AMaterial
 {
 public:
-    Material() {}
-    ~Material() {}
+    AMaterial();
+    ~AMaterial() {}
 
     void SetDiffuseColor(const glm::vec3 &_diffuseColor) { diffuseColor = _diffuseColor; }
     const glm::vec3 &GetDiffuseColor() const { return diffuseColor; }
@@ -111,13 +111,15 @@ public:
 
     void SetShaders(const std::string &_vertexShader, const std::string &_fragmentShader);
 
+    GLuint GetShaderProgram() const { return shaderProgram; }
+
 private:
     glm::vec3 diffuseColor = glm::vec3(1.0f);
     glm::vec3 specularColor = glm::vec3(0.0f);
 
     std::string vertexShader = "vertex_shader.glsl";
     std::string fragmentShader = "fragment_shader.glsl";
-    GLuint shaderProgram = 0;
+    GLuint shaderProgram = 404;
 
     float shininess = 1.0f;
 };
@@ -140,7 +142,7 @@ public:
     void Update() override;
     void Render();
 
-    Material material;
+    AMaterial* material;
 
 private:
     std::vector<glm::vec3> vertices;
