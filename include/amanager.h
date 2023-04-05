@@ -37,9 +37,6 @@ private:
 
 class TextureManager {
 public:
-    // Load and store a texture from a file
-    static GLuint LoadTexture(const std::string& filePath, const std::string& textureName);
-
     // Get the texture object by name
     static GLuint GetTexture(const std::string& textureName);
 
@@ -47,6 +44,10 @@ public:
     static void ClearTextures();
 
 private:
+
+    // Load and store a texture from a file
+    static GLuint LoadTexture(const std::string& textureName);
+
     // A map that stores texture objects by their name
     static std::unordered_map<std::string, GLuint> textures;
 

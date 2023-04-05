@@ -113,7 +113,7 @@ void AObjectManager::DestroyObject(AObject *object)
 
 std::unordered_map<std::string, GLuint> TextureManager::textures;
 
-GLuint TextureManager::LoadTexture(const std::string& filePath, const std::string& textureName)
+GLuint TextureManager::LoadTexture(const std::string& textureName)
 {
     if (textures.find(textureName) != textures.end())
     {
@@ -121,6 +121,7 @@ GLuint TextureManager::LoadTexture(const std::string& filePath, const std::strin
     }
 
     int width, height, channels;
+    std::string filePath = "textures/" + textureName + ".jpg";
     unsigned char* data = stbi_load(filePath.c_str(), &width, &height, &channels, 0);
 
     if (!data)
@@ -141,9 +142,9 @@ GLuint TextureManager::GetTexture(const std::string& textureName)
     if (textures.find(textureName) != textures.end())
     {
         return textures[textureName];
+    } else {
+        return LoadTexture( textureName );
     }
-
-    return 0;
 }
 
 void TextureManager::ClearTextures()
