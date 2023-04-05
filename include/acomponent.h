@@ -88,6 +88,17 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+struct VertexSimple {
+    glm::vec3 position;
+    glm::vec3 normal;
+};
+
+struct Vertex {
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec2 texCoords;
+};
+
 class AMaterial
 {
 public:
@@ -117,6 +128,7 @@ private:
     glm::vec3 diffuseColor = glm::vec3(1.0f);
     glm::vec3 specularColor = glm::vec3(0.0f);
 
+    std::string diffuseTexture = "bricks";
     std::string vertexShader = "vertex_shader.glsl";
     std::string fragmentShader = "fragment_shader.glsl";
     GLuint shaderProgram = 404;
@@ -132,6 +144,7 @@ public:
 
     void SetVertices(const std::vector<glm::vec3> &_vertices);
     void SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals);
+    void SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals, const std::vector<glm::vec2>& _texCoords);
 
     const std::vector<glm::vec3> &GetVertices() const;
 

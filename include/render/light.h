@@ -19,5 +19,4 @@ public:
 
 private:
     ATransform* transform = nullptr;
-    ARenderer* renderer = nullptr;
 };

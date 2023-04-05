@@ -12,7 +12,7 @@ CameraController::CameraController(float _speed, float _sensitivity)
 
 void CameraController::Update()
 {
-    GLFWwindow* window = AMaster::GetInstance().GetRenderer()->window;
+    GLFWwindow* window = ARenderer::GetInstance().window;
     ATransform* transform = owner->GetComponent<ATransform>();
 
     // Keyboard input
@@ -34,7 +34,7 @@ void CameraController::Update()
     double mouseX, mouseY;
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
-    glfwGetCursorPos(AMaster::GetInstance().GetRenderer()->window, &mouseX, &mouseY);
+    glfwGetCursorPos(ARenderer::GetInstance().window, &mouseX, &mouseY);
 
     if (firstMouse)
     {

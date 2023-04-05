@@ -12,10 +12,6 @@ ADirectionalLight::ADirectionalLight(glm::vec3 _diffuse, glm::vec3 _ambient, glm
 
 void ADirectionalLight::Render()
 {
-    if (renderer == nullptr)
-    {
-        renderer = AMaster::GetInstance().GetRenderer();
-    }
     if (transform == nullptr)
     {
         transform = owner->GetComponent<ATransform>();
@@ -25,8 +21,9 @@ void ADirectionalLight::Render()
         }
     }
 
-    renderer->SetShaderUniform("u_Sun.position", transform->GetPosition());
-    renderer->SetShaderUniform("u_Sun.ambient", ambient);
-    renderer->SetShaderUniform("u_Sun.diffuse", diffuse);
-    renderer->SetShaderUniform("u_Sun.specular", specular);
+    ARenderer& renderer = ARenderer::GetInstance();
+    renderer.SetShaderUniform("u_Sun.position", transform->GetPosition());
+    renderer.SetShaderUniform("u_Sun.ambient", ambient);
+    renderer.SetShaderUniform("u_Sun.diffuse", diffuse);
+    renderer.SetShaderUniform("u_Sun.specular", specular);
 }

@@ -9,17 +9,16 @@ ShaderController::ShaderController(float steps)
 
 void ShaderController::Update()
 {
-    renderer = AMaster::GetInstance().GetRenderer();
-    window = renderer->window;
+    window = ARenderer::GetInstance().window;
 
     if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
     {
         value += steps;
-        renderer->SetShaderUniform("u_Shininess", value);
+        ARenderer::GetInstance().SetShaderUniform("u_Shininess", value);
     }
     if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
     {
         value -= steps;
-        renderer->SetShaderUniform("u_Shininess", value);
+        ARenderer::GetInstance().SetShaderUniform("u_Shininess", value);
     }
 }

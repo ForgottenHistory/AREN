@@ -155,12 +155,16 @@ AMeshComponent::AMeshComponent()
     material = new AMaterial();
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 AMeshComponent::~AMeshComponent()
 {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices)
 {
@@ -178,20 +182,48 @@ void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices)
     glBindVertexArray(0);
 }
 
-struct Vertex {
-    glm::vec3 position;
-    glm::vec3 normal;
-};
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals)
 {
     assert(_vertices.size() == _normals.size());
+
+    std::vector<VertexSimple> vertexData(_vertices.size());
+    for (size_t i = 0; i < _vertices.size(); ++i)
+    {
+        vertexData[i].position = _vertices[i];
+        vertexData[i].normal = _normals[i];
+    }
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(VertexSimple), vertexData.data(), GL_STATIC_DRAW);
+
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSimple), (void*)offsetof(VertexSimple, position));
+    glEnableVertexAttribArray(0);
+
+    // Normal attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSimple), (void*)offsetof(VertexSimple, normal));
+    glEnableVertexAttribArray(1);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals, const std::vector<glm::vec2>& _texCoords)
+{
+    assert(_vertices.size() == _normals.size() && _vertices.size() == _texCoords.size());
 
     std::vector<Vertex> vertexData(_vertices.size());
     for (size_t i = 0; i < _vertices.size(); ++i)
     {
         vertexData[i].position = _vertices[i];
         vertexData[i].normal = _normals[i];
+        vertexData[i].texCoords = _texCoords[i];
     }
 
     glBindVertexArray(VAO);
@@ -207,9 +239,15 @@ void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices, const 
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
     glEnableVertexAttribArray(1);
 
+    // Texture coordinate attribute
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
+    glEnableVertexAttribArray(2);
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMeshComponent::SetIndices(const std::vector<unsigned int>& _indices)
 {
@@ -223,26 +261,30 @@ void AMeshComponent::SetIndices(const std::vector<unsigned int>& _indices)
     glBindVertexArray(0);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void AMeshComponent::Update()
 {
 
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void AMeshComponent::Render()
 {
-    ARenderer* renderer = AMaster::GetInstance().GetRenderer();
+    ARenderer& renderer = ARenderer::GetInstance();
     if( material->GetShaderProgram() == 404 )
         material->SetShaders( material->GetVertexShader(), material->GetFragmentShader() );
 
     glUseProgram(material->GetShaderProgram());
 
-    GLint modelLoc = glGetUniformLocation(AMaster::GetInstance().GetRenderer()->shaderProgram, "model");
+    GLint modelLoc = glGetUniformLocation(renderer.shaderProgram, "model");
     glm::mat4 modelMatrix = owner->GetComponent<ATransform>()->GetModelMatrix();
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
-    renderer->SetShaderUniform("u_DiffuseColor", material->GetDiffuseColor());
-    renderer->SetShaderUniform("u_SpecularColor", material->GetSpecularColor());
-    renderer->SetShaderUniform("u_Shininess", material->GetShininess());
+    renderer.SetShaderUniform("u_DiffuseColor", material->GetDiffuseColor());
+    renderer.SetShaderUniform("u_SpecularColor", material->GetSpecularColor());
+    renderer.SetShaderUniform("u_Shininess", material->GetShininess());
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
@@ -256,26 +298,28 @@ AMaterial::AMaterial()
     //SetShaders( vertexShader, fragmentShader );
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void AMaterial::SetVertexShader(const std::string &_vertexShader)
 {
-    ARenderer* renderer = AMaster::GetInstance().GetRenderer();
+    ARenderer& renderer = ARenderer::GetInstance();
     vertexShader = _vertexShader;
-    shaderProgram = renderer->GetShaderProgram( vertexShader, fragmentShader );
+    shaderProgram = renderer.GetShaderProgram( vertexShader, fragmentShader );
 }
 
 void AMaterial::SetFragmentShader(const std::string &_fragmentShader)
 {
-    ARenderer* renderer = AMaster::GetInstance().GetRenderer();
+    ARenderer& renderer = ARenderer::GetInstance();
     fragmentShader = _fragmentShader;
-    shaderProgram = renderer->GetShaderProgram( vertexShader, fragmentShader );
+    shaderProgram = renderer.GetShaderProgram( vertexShader, fragmentShader );
 }
 
 void AMaterial::SetShaders(const std::string &_vertexShader, const std::string &_fragmentShader)
 {
-    ARenderer* renderer = AMaster::GetInstance().GetRenderer();
+    ARenderer& renderer = ARenderer::GetInstance();
     vertexShader = _vertexShader;
     fragmentShader = _fragmentShader;
-    shaderProgram = renderer->GetShaderProgram( vertexShader, fragmentShader );
+    shaderProgram = renderer.GetShaderProgram( vertexShader, fragmentShader );
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -27,7 +27,6 @@ public:
     void SecondUpdate();
     void Render();
 
-    ARenderer* GetRenderer() { return renderer; }
     AObjectManager* GetObjectManager() { return objectManager; }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +34,7 @@ public:
 private:
     AMaster();
 
-    ARenderer* renderer;
+    ARenderer& renderer;
     AObjectManager* objectManager;
 
     AObject* mainCamera;

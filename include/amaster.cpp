@@ -15,14 +15,13 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-AMaster::AMaster()
+AMaster::AMaster() : renderer(ARenderer::GetInstance())
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Create a test renderer
     // TestRenderer* testRenderer = new TestRenderer();
     // testRenderer->Main();
 
-    renderer = new ARenderer();
     objectManager = new AObjectManager();
     ColorManager &colorManager = ColorManager::GetInstance();
 
@@ -36,7 +35,7 @@ AMaster::AMaster()
     mainCamera->AddComponent(cameraTrans);
 
     ACamera *camera = new ACamera();
-    renderer->SetCamera(camera);
+    renderer.SetCamera(camera);
     mainCamera->AddComponent(camera);
 
     CameraController *cameraController = new CameraController();
@@ -99,7 +98,6 @@ AMaster::AMaster()
 AMaster::~AMaster()
 {
     glfwTerminate();
-    delete renderer;
     delete objectManager;
 }
 
@@ -107,7 +105,7 @@ AMaster::~AMaster()
 
 void AMaster::MainLoop()
 {
-    while (!glfwWindowShouldClose(renderer->window))
+    while (!glfwWindowShouldClose(renderer.window))
     {
         Update();
         Render();
@@ -155,11 +153,11 @@ void AMaster::SecondUpdate()
 
 void AMaster::Render()
 {
-    renderer->Render();
+    renderer.Render();
     objectManager->Render();
 
     // Swap the front and back buffers
-    glfwSwapBuffers(renderer->window);
+    glfwSwapBuffers(renderer.window);
 
     // Poll for and process events
     glfwPollEvents();

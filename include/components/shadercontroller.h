@@ -13,7 +13,6 @@ public:
 
 private:
     GLFWwindow* window;
-    ARenderer* renderer;
     float steps = 0.2f;
     float value = 0.0f;
 };
