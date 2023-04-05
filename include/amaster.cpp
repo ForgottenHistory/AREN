@@ -87,10 +87,13 @@ AMaster::AMaster() : renderer(ARenderer::GetInstance())
     // cube->AddComponent( new TestMovement() );
     cube->GetComponent<ATransform>()->SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
     cube->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::RED));
+    cube->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks");
+    //cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader.glsl", "fragment_simple_shader.glsl");
 
     ACube *cube2 = objectManager->CreateCube();
     cube2->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
-    cube2->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::BLUE));
+    //cube2->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::BLUE));
+    cube2->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
