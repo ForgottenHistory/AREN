@@ -19,7 +19,13 @@ public:
     //  FUNCTIONS
     ///////////////////////////////////////////////////////////////////////
 
-    ARenderer();
+    // Static method to get the singleton instance
+    static ARenderer& GetInstance()
+    {
+        static ARenderer instance; // Only created once
+        return instance;
+    }
+
     ~ARenderer();
 
     void Init();
@@ -43,6 +49,8 @@ public:
     ///////////////////////////////////////////////////////////////////////
 
 private:
+    
+    ARenderer();
 
     ///////////////////////////////////////////////////////////////////////
     //  FUNCTIONS
@@ -67,4 +75,8 @@ private:
     std::map<std::pair<std::string, std::string>, GLuint> shaderCache;
 
     ///////////////////////////////////////////////////////////////////////
+    
+    // Private copy constructor and assignment operator to prevent copying
+    ARenderer(const ARenderer&) = delete;
+    ARenderer& operator=(const ARenderer&) = delete;
 };
