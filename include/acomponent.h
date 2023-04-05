@@ -122,6 +122,10 @@ public:
 
     void SetShaders(const std::string &_vertexShader, const std::string &_fragmentShader);
 
+    void SetDiffuseTexture(const std::string &_diffuseTexture);
+    const std::string &GetDiffuseTexture() const { return diffuseTexture; }
+    GLuint GetDiffuseTextureID() const { return diffuseTextureID; }
+
     GLuint GetShaderProgram() const { return shaderProgram; }
 
 private:
@@ -129,9 +133,11 @@ private:
     glm::vec3 specularColor = glm::vec3(0.0f);
 
     std::string diffuseTexture = "bricks";
+    GLuint diffuseTextureID = 0;
+
     std::string vertexShader = "vertex_shader.glsl";
     std::string fragmentShader = "fragment_shader.glsl";
-    GLuint shaderProgram = 404;
+    GLuint shaderProgram = 0;
 
     float shininess = 1.0f;
 };

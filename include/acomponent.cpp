@@ -57,7 +57,6 @@ glm::vec3 ATransform::GetForward() const
     return glm::normalize(forward);
 }
 
-
 glm::vec3 ATransform::GetRight() const
 {
     return glm::normalize(glm::cross(GetForward(), glm::vec3(0.0f, 1.0f, 0.0f)));
@@ -167,7 +166,7 @@ AMeshComponent::~AMeshComponent()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices)
+void AMeshComponent::SetVertices(const std::vector<glm::vec3> &_vertices)
 {
     vertices = _vertices;
 
@@ -176,7 +175,7 @@ void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices)
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), vertices.data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void *)0);
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -185,7 +184,7 @@ void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals)
+void AMeshComponent::SetVertices(const std::vector<glm::vec3> &_vertices, const std::vector<glm::vec3> &_normals)
 {
     assert(_vertices.size() == _normals.size());
 
@@ -202,11 +201,11 @@ void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices, const 
     glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(VertexSimple), vertexData.data(), GL_STATIC_DRAW);
 
     // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSimple), (void*)offsetof(VertexSimple, position));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSimple), (void *)offsetof(VertexSimple, position));
     glEnableVertexAttribArray(0);
 
     // Normal attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSimple), (void*)offsetof(VertexSimple, normal));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexSimple), (void *)offsetof(VertexSimple, normal));
     glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -215,7 +214,7 @@ void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices, const 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals, const std::vector<glm::vec2>& _texCoords)
+void AMeshComponent::SetVertices(const std::vector<glm::vec3> &_vertices, const std::vector<glm::vec3> &_normals, const std::vector<glm::vec2> &_texCoords)
 {
     assert(_vertices.size() == _normals.size() && _vertices.size() == _texCoords.size());
 
@@ -233,15 +232,15 @@ void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices, const 
     glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(Vertex), vertexData.data(), GL_STATIC_DRAW);
 
     // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, position));
     glEnableVertexAttribArray(0);
 
     // Normal attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
     glEnableVertexAttribArray(1);
 
     // Texture coordinate attribute
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texCoords));
     glEnableVertexAttribArray(2);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -250,7 +249,7 @@ void AMeshComponent::SetVertices(const std::vector<glm::vec3>& _vertices, const 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AMeshComponent::SetIndices(const std::vector<unsigned int>& _indices)
+void AMeshComponent::SetIndices(const std::vector<unsigned int> &_indices)
 {
     indices = _indices;
 
@@ -266,14 +265,13 @@ void AMeshComponent::SetIndices(const std::vector<unsigned int>& _indices)
 
 void AMeshComponent::Update()
 {
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMeshComponent::Render()
 {
-    ARenderer& renderer = ARenderer::GetInstance();
+    ARenderer &renderer = ARenderer::GetInstance();
     glUseProgram(material->GetShaderProgram());
 
     GLint modelLoc = glGetUniformLocation(renderer.shaderProgram, "model");
@@ -283,8 +281,14 @@ void AMeshComponent::Render()
     renderer.SetShaderUniform("u_DiffuseColor", material->GetDiffuseColor());
     renderer.SetShaderUniform("u_SpecularColor", material->GetSpecularColor());
     renderer.SetShaderUniform("u_Shininess", material->GetShininess());
+    renderer.SetShaderUniform("u_Texture", 0);
 
     glBindVertexArray(VAO);
+
+    // Bind the texture
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, material->GetDiffuseTextureID());
+
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
@@ -293,31 +297,38 @@ void AMeshComponent::Render()
 
 AMaterial::AMaterial()
 {
-    SetShaders( vertexShader, fragmentShader );
+    SetShaders(vertexShader, fragmentShader);
+    SetDiffuseTexture("bricks");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMaterial::SetVertexShader(const std::string &_vertexShader)
 {
-    ARenderer& renderer = ARenderer::GetInstance();
+    ARenderer &renderer = ARenderer::GetInstance();
     vertexShader = _vertexShader;
-    shaderProgram = renderer.GetShaderProgram( vertexShader, fragmentShader );
+    shaderProgram = renderer.GetShaderProgram(vertexShader, fragmentShader);
 }
 
 void AMaterial::SetFragmentShader(const std::string &_fragmentShader)
 {
-    ARenderer& renderer = ARenderer::GetInstance();
+    ARenderer &renderer = ARenderer::GetInstance();
     fragmentShader = _fragmentShader;
-    shaderProgram = renderer.GetShaderProgram( vertexShader, fragmentShader );
+    shaderProgram = renderer.GetShaderProgram(vertexShader, fragmentShader);
 }
 
 void AMaterial::SetShaders(const std::string &_vertexShader, const std::string &_fragmentShader)
 {
-    ARenderer& renderer = ARenderer::GetInstance();
+    ARenderer &renderer = ARenderer::GetInstance();
     vertexShader = _vertexShader;
     fragmentShader = _fragmentShader;
-    shaderProgram = renderer.GetShaderProgram( vertexShader, fragmentShader );
+    shaderProgram = renderer.GetShaderProgram(vertexShader, fragmentShader);
+}
+
+void AMaterial::SetDiffuseTexture(const std::string &_diffuseTexture)
+{
+    diffuseTexture = _diffuseTexture;
+    diffuseTextureID = TextureManager::GetTexture(diffuseTexture);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
