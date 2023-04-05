@@ -1,7 +1,8 @@
 #include "acomponent.h"
-#include <aobject.h>
-#include <amaster.h>
+#include "aobject.h"
+#include "amaster.h"
 #include <render/arenderer.h>
+#include "amanager.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TRANSFORM COMPONENT
@@ -273,9 +274,6 @@ void AMeshComponent::Update()
 void AMeshComponent::Render()
 {
     ARenderer& renderer = ARenderer::GetInstance();
-    if( material->GetShaderProgram() == 404 )
-        material->SetShaders( material->GetVertexShader(), material->GetFragmentShader() );
-
     glUseProgram(material->GetShaderProgram());
 
     GLint modelLoc = glGetUniformLocation(renderer.shaderProgram, "model");
@@ -295,7 +293,7 @@ void AMeshComponent::Render()
 
 AMaterial::AMaterial()
 {
-    //SetShaders( vertexShader, fragmentShader );
+    SetShaders( vertexShader, fragmentShader );
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
