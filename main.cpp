@@ -1,4 +1,4 @@
-#include <amaster.h>
+#include "amaster.h"
 
 using namespace std;
 
