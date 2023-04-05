@@ -298,7 +298,7 @@ void AMeshComponent::Render()
 AMaterial::AMaterial()
 {
     SetShaders(vertexShader, fragmentShader);
-    SetDiffuseTexture("bricks");
+    SetDiffuseTexture(diffuseTexture);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

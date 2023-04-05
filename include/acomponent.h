@@ -132,7 +132,7 @@ private:
     glm::vec3 diffuseColor = glm::vec3(1.0f);
     glm::vec3 specularColor = glm::vec3(0.0f);
 
-    std::string diffuseTexture = "bricks";
+    std::string diffuseTexture = "default_texture";
     GLuint diffuseTextureID = 0;
 
     std::string vertexShader = "vertex_shader.glsl";
