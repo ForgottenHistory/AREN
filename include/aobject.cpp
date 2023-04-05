@@ -45,6 +45,16 @@ ACube::ACube()
         {0.5f, 0.5f, 0.5f},
         {-0.5f, 0.5f, 0.5f}};
 
+    std::vector<glm::vec2> texCoords = {
+        {0.0f, 0.0f},
+        {1.0f, 0.0f},
+        {1.0f, 1.0f},
+        {0.0f, 1.0f},
+        {0.0f, 0.0f},
+        {1.0f, 0.0f},
+        {1.0f, 1.0f},
+        {0.0f, 1.0f}};
+
     std::vector<unsigned int> indices = {
         0, 1, 2, 2, 3, 0,
         4, 5, 6, 6, 7, 4,
@@ -55,7 +65,7 @@ ACube::ACube()
 
     std::vector<glm::vec3> normals = CalculateNormals(vertices, indices);
 
-    meshComponent->SetVertices(vertices, normals);
+    meshComponent->SetVertices(vertices, normals, texCoords);
     meshComponent->SetIndices(indices);
 
     // Add the mesh component to the cube object
