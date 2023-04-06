@@ -82,7 +82,7 @@ AMaster::AMaster() : renderer(ARenderer::GetInstance())
     floor->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
     floor->GetComponent<ATransform>()->SetScale(glm::vec3(10.0f, 1.0f, 10.0f));
     floor->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::BROWN));
-    floor->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader_test", "fragment_shader_test");
+    floor->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_shader");
 
     ACube *cube = objectManager->CreateCube();
     // cube->AddComponent( new TestMovement() );
@@ -90,13 +90,13 @@ AMaster::AMaster() : renderer(ARenderer::GetInstance())
     //cube->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::RED));
     cube->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks");
     //cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader.glsl", "fragment_simple_shader.glsl");
-    cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader_test", "fragment_shader_test");
+    cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_shader");
 
     ACube *cube2 = objectManager->CreateCube();
     cube2->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
     //cube2->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::BLUE));
     cube2->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks");
-    cube2->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader_test", "fragment_normals_shader");
+    cube2->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_normals_shader");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
