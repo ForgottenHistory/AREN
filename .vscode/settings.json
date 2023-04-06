@@ -54,5 +54,6 @@
         "map": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled",
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "C_Cpp.intelliSenseCachePath": "${workspaceFolder}/ipch"
 }
