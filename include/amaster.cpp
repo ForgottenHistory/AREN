@@ -18,9 +18,9 @@ AMaster::AMaster()
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    AObjectManager& objectManager = AObjectManager::GetInstance();
+    AObjectManager &objectManager = AObjectManager::GetInstance();
     ColorManager &colorManager = ColorManager::GetInstance();
-    ARenderer& renderer = ARenderer::GetInstance();
+    ARenderer &renderer = ARenderer::GetInstance();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // CREATE CAMERA
@@ -44,14 +44,14 @@ AMaster::AMaster()
 
     // Set directional light values
     glm::vec3 sunPosition = glm::vec3(20.0f, 20.0f, 20.0f);
-    glm::vec3 sunDiffuse = glm::vec3( 1.0f, 0.9f, 0.7f);
-    glm::vec3 sunAmbient = glm::vec3( 0.1f, 0.1f, 0.1f);
-    glm::vec3 sunSpecular = glm::vec3( 1.0f, 1.0f, 1.0f);
+    glm::vec3 sunDiffuse = glm::vec3(1.0f, 0.9f, 0.7f);
+    glm::vec3 sunAmbient = glm::vec3(0.1f, 0.1f, 0.1f);
+    glm::vec3 sunSpecular = glm::vec3(1.0f, 1.0f, 1.0f);
 
     // Uncomment to use matte light
-    //sunDiffuse = colorManager.GetColor(ColorManager::WHITE);
-    //sunAmbient = colorManager.GetColor(ColorManager::WHITE);
-    //sunSpecular = colorManager.GetColor(ColorManager::WHITE);
+    // sunDiffuse = colorManager.GetColor(ColorManager::WHITE);
+    // sunAmbient = colorManager.GetColor(ColorManager::WHITE);
+    // sunSpecular = colorManager.GetColor(ColorManager::WHITE);
 
     AObject *light = objectManager.CreateObject();
     ADirectionalLight *directionalLight = new ADirectionalLight(sunDiffuse,
@@ -63,7 +63,7 @@ AMaster::AMaster()
     sunTrans->SetPosition(sunPosition);
     light->AddComponent(sunTrans);
 
-    MoveWithTime* moveWithTime = new MoveWithTime( MoveWithTime::MoveType::SINTIME );
+    MoveWithTime *moveWithTime = new MoveWithTime(MoveWithTime::MoveType::SINTIME);
     moveWithTime->lockX = true;
     moveWithTime->lockY = false;
     moveWithTime->lockZ = true;
@@ -84,14 +84,14 @@ AMaster::AMaster()
     ACube *cube = objectManager.CreateCube();
     // cube->AddComponent( new TestMovement() );
     cube->GetComponent<ATransform>()->SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
-    //cube->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::RED));
+    // cube->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::RED));
     cube->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks");
-    //cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader.glsl", "fragment_simple_shader.glsl");
+    // cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader.glsl", "fragment_simple_shader.glsl");
     cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_shader");
 
     ACube *cube2 = objectManager.CreateCube();
     cube2->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
-    //cube2->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::BLUE));
+    // cube2->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::BLUE));
     cube2->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks");
     cube2->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_normals_shader");
 }
@@ -107,7 +107,7 @@ AMaster::~AMaster()
 
 void AMaster::MainLoop()
 {
-    ARenderer& renderer = ARenderer::GetInstance();
+    ARenderer &renderer = ARenderer::GetInstance();
     while (!glfwWindowShouldClose(renderer.window))
     {
         Update();
@@ -119,7 +119,7 @@ void AMaster::MainLoop()
 
 void AMaster::PreStart()
 {
-    AObjectManager& objectManager = AObjectManager::GetInstance();
+    AObjectManager &objectManager = AObjectManager::GetInstance();
     objectManager.PreStart();
 }
 
@@ -127,7 +127,7 @@ void AMaster::PreStart()
 
 void AMaster::Start()
 {
-    AObjectManager& objectManager = AObjectManager::GetInstance();
+    AObjectManager &objectManager = AObjectManager::GetInstance();
     objectManager.Start();
 }
 
@@ -135,8 +135,8 @@ void AMaster::Start()
 
 void AMaster::Update()
 {
-    AObjectManager& objectManager = AObjectManager::GetInstance();
-    
+    AObjectManager &objectManager = AObjectManager::GetInstance();
+
     Time::UpdateTime();
     objectManager.Update();
 
@@ -153,7 +153,7 @@ void AMaster::Update()
 
 void AMaster::SecondUpdate()
 {
-    AObjectManager& objectManager = AObjectManager::GetInstance();
+    AObjectManager &objectManager = AObjectManager::GetInstance();
     objectManager.SecondUpdate();
 }
 
@@ -161,8 +161,8 @@ void AMaster::SecondUpdate()
 
 void AMaster::Render()
 {
-    AObjectManager& objectManager = AObjectManager::GetInstance();
-    ARenderer& renderer = ARenderer::GetInstance();
+    AObjectManager &objectManager = AObjectManager::GetInstance();
+    ARenderer &renderer = ARenderer::GetInstance();
 
     renderer.Render();
     objectManager.Render();
