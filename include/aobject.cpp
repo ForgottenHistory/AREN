@@ -3,7 +3,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::vector<glm::vec3> AObject::CalculateNormals(const std::vector<glm::vec3>& vertices, const std::vector<unsigned int>& indices)
+std::vector<glm::vec3> AObject::CalculateNormals(const std::vector<glm::vec3> &vertices, const std::vector<unsigned int> &indices)
 {
     std::vector<glm::vec3> normals(vertices.size(), glm::vec3(0.0f));
 
@@ -18,7 +18,7 @@ std::vector<glm::vec3> AObject::CalculateNormals(const std::vector<glm::vec3>& v
         normals[indices[i + 2]] += normal;
     }
 
-    for (glm::vec3& normal : normals)
+    for (glm::vec3 &normal : normals)
     {
         normal = glm::normalize(normal);
     }
@@ -35,13 +35,37 @@ ACube::ACube()
     // Create a mesh component and set the cube-specific vertex and index data
     AMeshComponent *meshComponent = new AMeshComponent();
 
+    // Vertices are duplicated for each face
+    // This is to match the texture coordinates
     std::vector<glm::vec3> vertices = {
+        // Front face
         {-0.5f, -0.5f, -0.5f},
         {0.5f, -0.5f, -0.5f},
         {0.5f, 0.5f, -0.5f},
         {-0.5f, 0.5f, -0.5f},
+        // Back face
         {-0.5f, -0.5f, 0.5f},
         {0.5f, -0.5f, 0.5f},
+        {0.5f, 0.5f, 0.5f},
+        {-0.5f, 0.5f, 0.5f},
+        // Left face
+        {-0.5f, -0.5f, -0.5f},
+        {-0.5f, -0.5f, 0.5f},
+        {-0.5f, 0.5f, 0.5f},
+        {-0.5f, 0.5f, -0.5f},
+        // Right face
+        {0.5f, -0.5f, -0.5f},
+        {0.5f, -0.5f, 0.5f},
+        {0.5f, 0.5f, 0.5f},
+        {0.5f, 0.5f, -0.5f},
+        // Bottom face
+        {-0.5f, -0.5f, -0.5f},
+        {0.5f, -0.5f, -0.5f},
+        {0.5f, -0.5f, 0.5f},
+        {-0.5f, -0.5f, 0.5f},
+        // Top face
+        {-0.5f, 0.5f, -0.5f},
+        {0.5f, 0.5f, -0.5f},
         {0.5f, 0.5f, 0.5f},
         {-0.5f, 0.5f, 0.5f}};
 
@@ -50,18 +74,40 @@ ACube::ACube()
         {1.0f, 0.0f},
         {1.0f, 1.0f},
         {0.0f, 1.0f},
+
+        {0.0f, 0.0f},
+        {1.0f, 0.0f},
+        {1.0f, 1.0f},
+        {0.0f, 1.0f},
+
+        {0.0f, 0.0f},
+        {1.0f, 0.0f},
+        {1.0f, 1.0f},
+        {0.0f, 1.0f},
+
+        {0.0f, 0.0f},
+        {1.0f, 0.0f},
+        {1.0f, 1.0f},
+        {0.0f, 1.0f},
+
+        {0.0f, 0.0f},
+        {1.0f, 0.0f},
+        {1.0f, 1.0f},
+        {0.0f, 1.0f},
+
         {0.0f, 0.0f},
         {1.0f, 0.0f},
         {1.0f, 1.0f},
         {0.0f, 1.0f}};
 
     std::vector<unsigned int> indices = {
-        0, 1, 2, 2, 3, 0,
-        4, 5, 6, 6, 7, 4,
-        0, 1, 5, 5, 4, 0,
-        2, 3, 7, 7, 6, 2,
-        0, 3, 7, 7, 4, 0,
-        1, 2, 6, 6, 5, 1};
+    0, 1, 2, 2, 3, 0,
+    4, 5, 6, 6, 7, 4,
+    8, 9, 10, 10, 11, 8,
+    12, 13, 14, 14, 15, 12,
+    16, 17, 18, 18, 19, 16,
+    20, 21, 22, 22, 23, 20
+    };
 
     std::vector<glm::vec3> normals = CalculateNormals(vertices, indices);
 
