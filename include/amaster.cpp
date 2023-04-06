@@ -1,10 +1,9 @@
 #include <amaster.h>
 #include <aobject.h>
-#include <amanager.h>
+#include "amanager.h"
 #include <render/arenderer.h>
 #include <time.h>
 #include "acomponent.h"
-#include "render/testrenderer.h"
 #include "acolor.h"
 
 #include "render/light.h"
@@ -15,21 +14,19 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-AMaster::AMaster() : renderer(ARenderer::GetInstance())
+AMaster::AMaster()
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Create a test renderer
-    // TestRenderer* testRenderer = new TestRenderer();
-    // testRenderer->Main();
 
-    objectManager = new AObjectManager();
+    AObjectManager& objectManager = AObjectManager::GetInstance();
     ColorManager &colorManager = ColorManager::GetInstance();
+    ARenderer& renderer = ARenderer::GetInstance();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // CREATE CAMERA
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    mainCamera = objectManager->CreateObject();
+    mainCamera = objectManager.CreateObject();
     ATransform *cameraTrans = new ATransform();
     cameraTrans->SetPosition(glm::vec3(1.0f, 0.0f, 2.0f));
     mainCamera->AddComponent(cameraTrans);
@@ -56,7 +53,7 @@ AMaster::AMaster() : renderer(ARenderer::GetInstance())
     //sunAmbient = colorManager.GetColor(ColorManager::WHITE);
     //sunSpecular = colorManager.GetColor(ColorManager::WHITE);
 
-    AObject *light = objectManager->CreateObject();
+    AObject *light = objectManager.CreateObject();
     ADirectionalLight *directionalLight = new ADirectionalLight(sunDiffuse,
                                                                 sunAmbient,
                                                                 sunSpecular);
@@ -78,13 +75,13 @@ AMaster::AMaster() : renderer(ARenderer::GetInstance())
     // CREATE CUBES
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    ACube *floor = objectManager->CreateCube();
+    ACube *floor = objectManager.CreateCube();
     floor->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
     floor->GetComponent<ATransform>()->SetScale(glm::vec3(10.0f, 1.0f, 10.0f));
     floor->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::BROWN));
     floor->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_shader");
 
-    ACube *cube = objectManager->CreateCube();
+    ACube *cube = objectManager.CreateCube();
     // cube->AddComponent( new TestMovement() );
     cube->GetComponent<ATransform>()->SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
     //cube->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::RED));
@@ -92,7 +89,7 @@ AMaster::AMaster() : renderer(ARenderer::GetInstance())
     //cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader.glsl", "fragment_simple_shader.glsl");
     cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_shader");
 
-    ACube *cube2 = objectManager->CreateCube();
+    ACube *cube2 = objectManager.CreateCube();
     cube2->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
     //cube2->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::BLUE));
     cube2->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks");
@@ -104,13 +101,13 @@ AMaster::AMaster() : renderer(ARenderer::GetInstance())
 AMaster::~AMaster()
 {
     glfwTerminate();
-    delete objectManager;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMaster::MainLoop()
 {
+    ARenderer& renderer = ARenderer::GetInstance();
     while (!glfwWindowShouldClose(renderer.window))
     {
         Update();
@@ -122,22 +119,26 @@ void AMaster::MainLoop()
 
 void AMaster::PreStart()
 {
-    objectManager->PreStart();
+    AObjectManager& objectManager = AObjectManager::GetInstance();
+    objectManager.PreStart();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMaster::Start()
 {
-    objectManager->Start();
+    AObjectManager& objectManager = AObjectManager::GetInstance();
+    objectManager.Start();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMaster::Update()
 {
+    AObjectManager& objectManager = AObjectManager::GetInstance();
+    
     Time::UpdateTime();
-    objectManager->Update();
+    objectManager.Update();
 
     float elapsedTime = Time::elapsedTime;
 
@@ -152,15 +153,19 @@ void AMaster::Update()
 
 void AMaster::SecondUpdate()
 {
-    objectManager->SecondUpdate();
+    AObjectManager& objectManager = AObjectManager::GetInstance();
+    objectManager.SecondUpdate();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMaster::Render()
 {
+    AObjectManager& objectManager = AObjectManager::GetInstance();
+    ARenderer& renderer = ARenderer::GetInstance();
+
     renderer.Render();
-    objectManager->Render();
+    objectManager.Render();
 
     // Swap the front and back buffers
     glfwSwapBuffers(renderer.window);

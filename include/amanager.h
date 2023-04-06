@@ -12,7 +12,13 @@ class ACube;
 
 class AObjectManager {
 public:
-    AObjectManager();
+    // Static method to get the singleton instance
+    static AObjectManager& GetInstance()
+    {
+        static AObjectManager instance; // Only created once
+        return instance;
+    }
+
     ~AObjectManager();
 
     void PreStart();
@@ -28,7 +34,7 @@ public:
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 private:
-
+    AObjectManager();
     std::vector<AObject*> objects;
 
 };
@@ -53,6 +59,8 @@ private:
 
     // Utility function to create a texture object from image data
     static GLuint CreateTexture(int width, int height, int channels, unsigned char* data);
+
+    // Private copy constructor and assignment operator to prevent copying
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

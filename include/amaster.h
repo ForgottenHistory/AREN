@@ -27,15 +27,10 @@ public:
     void SecondUpdate();
     void Render();
 
-    AObjectManager* GetObjectManager() { return objectManager; }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 private:
     AMaster();
-
-    ARenderer& renderer;
-    AObjectManager* objectManager;
 
     AObject* mainCamera;
 
