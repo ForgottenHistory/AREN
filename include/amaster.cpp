@@ -96,7 +96,7 @@ AMaster::AMaster() : renderer(ARenderer::GetInstance())
     cube2->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
     //cube2->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::BLUE));
     cube2->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks");
-    cube2->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader_test", "fragment_shader_test");
+    cube2->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader_test", "fragment_normals_shader");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
