@@ -272,16 +272,17 @@ void AMeshComponent::Update()
 void AMeshComponent::Render()
 {
     ARenderer &renderer = ARenderer::GetInstance();
-    glUseProgram(material->GetShaderProgram());
+    GLuint shaderProgram = material->GetShaderProgram();
+    glUseProgram(shaderProgram);
 
-    GLint modelLoc = glGetUniformLocation(renderer.shaderProgram, "model");
+    GLint modelLoc = glGetUniformLocation(shaderProgram, "model");
     glm::mat4 modelMatrix = owner->GetComponent<ATransform>()->GetModelMatrix();
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
-    renderer.SetShaderUniform("u_DiffuseColor", material->GetDiffuseColor());
-    renderer.SetShaderUniform("u_SpecularColor", material->GetSpecularColor());
-    renderer.SetShaderUniform("u_Shininess", material->GetShininess());
-    renderer.SetShaderUniform("u_Texture", 0);
+    renderer.SetShaderUniform(shaderProgram, "u_DiffuseColor", material->GetDiffuseColor());
+    renderer.SetShaderUniform(shaderProgram, "u_SpecularColor", material->GetSpecularColor());
+    renderer.SetShaderUniform(shaderProgram, "u_Shininess", material->GetShininess());
+    renderer.SetShaderUniform(shaderProgram, "u_Texture", 0);
 
     glBindVertexArray(VAO);
 

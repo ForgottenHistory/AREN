@@ -135,8 +135,8 @@ private:
     std::string diffuseTexture = "default_texture";
     GLuint diffuseTextureID = 0;
 
-    std::string vertexShader = "vertex_shader.glsl";
-    std::string fragmentShader = "fragment_shader.glsl";
+    std::string vertexShader = "vertex_shader";
+    std::string fragmentShader = "fragment_shader";
     GLuint shaderProgram = 0;
 
     float shininess = 1.0f;

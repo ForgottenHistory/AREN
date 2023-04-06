@@ -34,8 +34,8 @@ public:
 
     void SetCamera(ACamera* _camera) { camera = _camera; }
 
-    void SetShaderUniform(const std::string &name, const glm::vec3 &value);
-    void SetShaderUniform(const std::string &name, float value);
+    void SetShaderUniform(GLuint shaderProgram, const std::string &name, const glm::vec3 &value);
+    void SetShaderUniform(GLuint shaderProgram, const std::string &name, float value);
 
     GLuint GetShaderProgram(const std::string &vertexShaderName, const std::string &fragmentShaderName);
 

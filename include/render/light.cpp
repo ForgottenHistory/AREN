@@ -21,9 +21,9 @@ void ADirectionalLight::Render()
         }
     }
 
-    ARenderer& renderer = ARenderer::GetInstance();
-    renderer.SetShaderUniform("u_Sun.position", transform->GetPosition());
-    renderer.SetShaderUniform("u_Sun.ambient", ambient);
-    renderer.SetShaderUniform("u_Sun.diffuse", diffuse);
-    renderer.SetShaderUniform("u_Sun.specular", specular);
+    ARenderer &renderer = ARenderer::GetInstance();
+    renderer.SetShaderUniform(renderer.shaderProgram, "u_Sun.position", transform->GetPosition());
+    renderer.SetShaderUniform(renderer.shaderProgram, "u_Sun.ambient", ambient);
+    renderer.SetShaderUniform(renderer.shaderProgram, "u_Sun.diffuse", diffuse);
+    renderer.SetShaderUniform(renderer.shaderProgram, "u_Sun.specular", specular);
 }

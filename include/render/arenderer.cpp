@@ -82,21 +82,25 @@ void ARenderer::Render()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    //glUseProgram(shaderProgram);
-
     if (camera)
     {
-        GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
-        GLint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
-
+        glm::mat4 viewMatrix = camera->GetViewMatrix();
+        glm::mat4 projectionMatrix = camera->GetProjectionMatrix();
         glm::vec3 cameraPos = camera->owner->GetComponent<ATransform>()->GetPosition();
 
-        // Set view position uniform
-        GLint viewPosLoc = glGetUniformLocation(shaderProgram, "u_ViewPos");
-        glUniform3f(viewPosLoc, cameraPos.x, cameraPos.y, cameraPos.z);
+        for (auto &shaderPair : shaderCache)
+        {
+            GLuint shaderProgram = shaderPair.second;
+            glUseProgram(shaderProgram);
 
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->GetViewMatrix()));
-        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix()));
+            GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
+            GLint projectionLoc = glGetUniformLocation(shaderProgram, "projection");
+            GLint viewPosLoc = glGetUniformLocation(shaderProgram, "u_ViewPos");
+
+            glUniform3f(viewPosLoc, cameraPos.x, cameraPos.y, cameraPos.z);
+            glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+            glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+        }
     }
 }
 
@@ -104,13 +108,13 @@ void ARenderer::Render()
 //  SHADERS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ARenderer::SetShaderUniform(const std::string &name, const glm::vec3 &value)
+void ARenderer::SetShaderUniform(GLuint shaderProgram, const std::string &name, const glm::vec3 &value)
 {
     GLint location = glGetUniformLocation(shaderProgram, name.c_str());
     glUniform3f(location, value.x, value.y, value.z);
 }
 
-void ARenderer::SetShaderUniform(const std::string &name, float value)
+void ARenderer::SetShaderUniform(GLuint shaderProgram, const std::string &name, float value)
 {
     GLint location = glGetUniformLocation(shaderProgram, name.c_str());
     glUniform1f(location, value);
@@ -129,8 +133,8 @@ GLuint ARenderer::GetShaderProgram(const std::string &vertexShaderName, const st
     }
 
     // Load shaders
-    std::string vertexShaderSource = ReadFile(("shaders/" + vertexShaderName).c_str());
-    std::string fragmentShaderSource = ReadFile(("shaders/" + fragmentShaderName).c_str());
+    std::string vertexShaderSource = ReadFile(("shaders/" + vertexShaderName + ".glsl").c_str());
+    std::string fragmentShaderSource = ReadFile(("shaders/" + fragmentShaderName + ".glsl").c_str());
     GLuint vertexShader = LoadShader(GL_VERTEX_SHADER, vertexShaderSource);
     GLuint fragmentShader = LoadShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
 
