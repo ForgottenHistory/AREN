@@ -159,7 +159,7 @@ public:
 
     // Override the Update function if needed
     void Update() override;
-    void Render();
+    void Render() override;
 
     AMaterial* material;
 
