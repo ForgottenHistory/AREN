@@ -153,7 +153,7 @@ public:
     void SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals, const std::vector<glm::vec2>& _texCoords);
 
     void SetIndices(const std::vector<unsigned int> &_indices);
-W
+
     void Render() override;
 
     AMaterial* material;
