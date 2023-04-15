@@ -263,12 +263,6 @@ void AMeshComponent::SetIndices(const std::vector<unsigned int> &_indices)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AMeshComponent::Update()
-{
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void AMeshComponent::Render()
 {
     ARenderer &renderer = ARenderer::GetInstance();
@@ -330,6 +324,81 @@ void AMaterial::SetDiffuseTexture(const std::string &_diffuseTexture)
 {
     diffuseTexture = _diffuseTexture;
     diffuseTextureID = TextureManager::GetTexture(diffuseTexture);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ASkyboxComponent::ASkyboxComponent()
+{
+    const GLfloat skyboxVertices[] = {
+    -1.0f,  1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
+     1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+
+    -1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f, -1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,
+
+     1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
+
+    -1.0f, -1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f,
+    -1.0f, -1.0f,  1.0f,
+
+    -1.0f,  1.0f, -1.0f,
+     1.0f,  1.0f, -1.0f,
+     1.0f,  1.0f,  1.0f,
+     1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f,  1.0f,
+    -1.0f,  1.0f, -1.0f,
+
+    -1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f, -1.0f,
+     1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f,  1.0f,
+     1.0f, -1.0f,  1.0f };
+
+
+    material = new AMaterial();
+    material->SetVertexShader("vertex_skybox_shader");
+    material->SetDiffuseTexture("default_skybox.png");
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ASkyboxComponent::~ASkyboxComponent()
+{
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteVertexArrays(1, &VBO);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ASkyboxComponent::SetCubemapFaces(const std::vector<std::string> &faces)
+{
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ASkyboxComponent::Render()
+{
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

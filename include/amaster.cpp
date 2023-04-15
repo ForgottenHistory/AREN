@@ -23,6 +23,14 @@ AMaster::AMaster()
     ARenderer &renderer = ARenderer::GetInstance();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // CREATE SKYBOX
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // AObject *skybox = objectManager.CreateObject();
+    // skybox->name = "Skybox";
+    // skybox->AddComponent(new ASkyboxComponent());
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // CREATE CAMERA
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -85,14 +93,14 @@ AMaster::AMaster()
     // cube->AddComponent( new TestMovement() );
     cube->GetComponent<ATransform>()->SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
     // cube->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::RED));
-    cube->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks");
+    cube->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks.jpg");
     // cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader.glsl", "fragment_simple_shader.glsl");
     cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_shader");
 
     ACube *cube2 = objectManager.CreateCube();
     cube2->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
     // cube2->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::BLUE));
-    cube2->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks");
+    cube2->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks.jpg");
     cube2->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_normals_shader");
 }
 

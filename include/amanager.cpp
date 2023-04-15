@@ -121,11 +121,10 @@ GLuint TextureManager::LoadTexture(const std::string& textureName)
     }
 
     int width, height, channels;
-    std::string filePath = "textures/" + textureName + ".jpg";
+    std::string filePath = "textures/" + textureName;
     unsigned char* data = stbi_load(filePath.c_str(), &width, &height, &channels, 0);
 
-    if (!data)
-    {
+    if (!data) {
         std::cerr << "Failed to load texture: " << filePath << std::endl;
         return 0;
     }

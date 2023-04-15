@@ -33,6 +33,7 @@ public:
     void Render();
 
     void SetCamera(ACamera* _camera) { camera = _camera; }
+    ACamera* GetCamera() { return camera; }
 
     void SetShaderUniform(GLuint shaderProgram, const std::string &name, const glm::vec3 &value);
     void SetShaderUniform(GLuint shaderProgram, const std::string &name, float value);

@@ -132,7 +132,7 @@ private:
     glm::vec3 diffuseColor = glm::vec3(1.0f);
     glm::vec3 specularColor = glm::vec3(0.0f);
 
-    std::string diffuseTexture = "default_texture";
+    std::string diffuseTexture = "default_texture.jpg";
     GLuint diffuseTextureID = 0;
 
     std::string vertexShader = "vertex_shader";
@@ -152,14 +152,9 @@ public:
     void SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals);
     void SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals, const std::vector<glm::vec2>& _texCoords);
 
-    const std::vector<glm::vec3> &GetVertices() const;
-
     void SetIndices(const std::vector<unsigned int> &_indices);
-    const std::vector<unsigned int> &GetIndices() const;
 
-    // Override the Update function if needed
-    void Update() override;
-    void Render();
+    void Render() override;
 
     AMaterial* material;
 
@@ -169,6 +164,26 @@ private:
 
     // OpenGL-specific data
     GLuint VAO, VBO, EBO;
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class ASkyboxComponent : public Component
+{
+public:
+    ASkyboxComponent();
+    ~ASkyboxComponent();
+
+    void SetCubemapFaces(const std::vector<std::string>& faces);
+
+    void Render() override;
+
+    AMaterial* material;
+
+private:
+
+    // OpenGL-specific data
+    GLuint VAO, VBO;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
