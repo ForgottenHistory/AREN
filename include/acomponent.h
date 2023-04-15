@@ -106,11 +106,11 @@ public:
     AMaterial();
     ~AMaterial() {}
 
-    void SetDiffuseColor(const glm::vec3 &_diffuseColor) { diffuseColor = _diffuseColor; }
-    const glm::vec3 &GetDiffuseColor() const { return diffuseColor; }
+    void SetDiffuseColor(const AVec3 &_diffuseColor) { diffuseColor = _diffuseColor; }
+    const AVec3 &GetDiffuseColor() const { return diffuseColor; }
 
-    void SetSpecularColor(const glm::vec3 &_specularColor) { specularColor = _specularColor; }
-    const glm::vec3 &GetSpecularColor() const { return specularColor; }
+    void SetSpecularColor(const AVec3 &_specularColor) { specularColor = _specularColor; }
+    const AVec3 &GetSpecularColor() const { return specularColor; }
 
     void SetShininess(const float _shininess) { shininess = _shininess; }
     const float GetShininess() const { return shininess; }
@@ -130,8 +130,8 @@ public:
     GLuint GetShaderProgram() const { return shaderProgram; }
 
 private:
-    glm::vec3 diffuseColor = glm::vec3(1.0f);
-    glm::vec3 specularColor = glm::vec3(0.0f);
+    AVec3 diffuseColor = AVec3(1.0f);
+    AVec3 specularColor = AVec3(0.0f);
 
     std::string diffuseTexture = "default_texture.jpg";
     GLuint diffuseTextureID = 0;

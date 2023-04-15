@@ -7,13 +7,13 @@ class ADirectionalLight : public Component
 {
 public:
 
-    ADirectionalLight(glm::vec3 _diffuse, glm::vec3 _ambient, glm::vec3 _specular);
+    ADirectionalLight(AVec3 _diffuse, AVec3 _ambient, AVec3 _specular);
 
     void Render() override;
 
-    glm::vec3 diffuse;
-    glm::vec3 ambient;
-    glm::vec3 specular;
+    AVec3 diffuse;
+    AVec3 ambient;
+    AVec3 specular;
 
     glm::vec3 GetDirection() { return transform->GetForward(); }
 

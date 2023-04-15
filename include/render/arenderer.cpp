@@ -108,7 +108,7 @@ void ARenderer::Render()
 //  SHADERS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ARenderer::SetShaderUniform(GLuint shaderProgram, const std::string &name, const glm::vec3 &value)
+void ARenderer::SetShaderUniform(GLuint shaderProgram, const std::string &name, const AVec3 &value)
 {
     GLint location = glGetUniformLocation(shaderProgram, name.c_str());
     glUniform3f(location, value.x, value.y, value.z);

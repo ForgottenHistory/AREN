@@ -7,6 +7,7 @@ public:
     AVec3() : x(0.0f), y(0.0f), z(0.0f) {}
     AVec3(float x, float y, float z) : x(x), y(y), z(z) {}
     AVec3(float x) : x(x), y(x), z(x) {}
+    AVec3(glm::vec3 glmVec) : x(glmVec.x), y(glmVec.y), z(glmVec.z) {}
 
     // Basic arithmetic operations
     AVec3 operator+(const AVec3& other) const;

@@ -10,6 +10,7 @@
 #include "components/movewithtime.h"
 #include "components/cameracontroller.h"
 
+#include "math/AVec3.h"
 #include "debug/test.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,9 +53,9 @@ AMaster::AMaster()
 
     // Set directional light values
     glm::vec3 sunPosition = glm::vec3(20.0f, 20.0f, 20.0f);
-    glm::vec3 sunDiffuse = glm::vec3(1.0f, 0.9f, 0.7f);
-    glm::vec3 sunAmbient = glm::vec3(0.1f, 0.1f, 0.1f);
-    glm::vec3 sunSpecular = glm::vec3(1.0f, 1.0f, 1.0f);
+    AVec3 sunDiffuse = AVec3(1.0f, 0.9f, 0.7f);
+    AVec3 sunAmbient = AVec3(0.1f, 0.1f, 0.1f);
+    AVec3 sunSpecular = AVec3(1.0f, 1.0f, 1.0f);
 
     // Uncomment to use matte light
     // sunDiffuse = colorManager.GetColor(ColorManager::WHITE);

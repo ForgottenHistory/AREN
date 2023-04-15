@@ -5,7 +5,7 @@
 #include <glmpch.h>
 #include <map>
 #include <string>
-
+#include "math/AVec3.h"
 
 class ACamera;
 
@@ -35,7 +35,7 @@ public:
     void SetCamera(ACamera* _camera) { camera = _camera; }
     ACamera* GetCamera() { return camera; }
 
-    void SetShaderUniform(GLuint shaderProgram, const std::string &name, const glm::vec3 &value);
+    void SetShaderUniform(GLuint shaderProgram, const std::string &name, const AVec3 &value);
     void SetShaderUniform(GLuint shaderProgram, const std::string &name, float value);
 
     GLuint GetShaderProgram(const std::string &vertexShaderName, const std::string &fragmentShaderName);
