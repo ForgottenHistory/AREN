@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "math/AVec3.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // COMPONENT BASE CLASS
@@ -89,13 +90,13 @@ private:
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct VertexSimple {
-    glm::vec3 position;
-    glm::vec3 normal;
+    AVec3 position;
+    AVec3 normal;
 };
 
 struct Vertex {
-    glm::vec3 position;
-    glm::vec3 normal;
+    AVec3 position;
+    AVec3 normal;
     glm::vec2 texCoords;
 };
 
@@ -148,9 +149,9 @@ public:
     AMeshComponent();
     ~AMeshComponent();
 
-    void SetVertices(const std::vector<glm::vec3> &_vertices);
-    void SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals);
-    void SetVertices(const std::vector<glm::vec3>& _vertices, const std::vector<glm::vec3>& _normals, const std::vector<glm::vec2>& _texCoords);
+    void SetVertices(const std::vector<AVec3> &_vertices);
+    void SetVertices(const std::vector<AVec3>& _vertices, const std::vector<AVec3>& _normals);
+    void SetVertices(const std::vector<AVec3>& _vertices, const std::vector<AVec3>& _normals, const std::vector<glm::vec2>& _texCoords);
 
     void SetIndices(const std::vector<unsigned int> &_indices);
 
@@ -159,7 +160,7 @@ public:
     AMaterial* material;
 
 private:
-    std::vector<glm::vec3> vertices;
+    std::vector<AVec3> vertices;
     std::vector<unsigned int> indices;
 
     // OpenGL-specific data

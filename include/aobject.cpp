@@ -3,24 +3,24 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-std::vector<glm::vec3> AObject::CalculateNormals(const std::vector<glm::vec3> &vertices, const std::vector<unsigned int> &indices)
+std::vector<AVec3> AObject::CalculateNormals(const std::vector<AVec3> &vertices, const std::vector<unsigned int> &indices)
 {
-    std::vector<glm::vec3> normals(vertices.size(), glm::vec3(0.0f));
+    std::vector<AVec3> normals(vertices.size(), AVec3(0.0f));
 
     for (size_t i = 0; i < indices.size(); i += 3)
     {
-        glm::vec3 v1 = vertices[indices[i + 1]] - vertices[indices[i]];
-        glm::vec3 v2 = vertices[indices[i + 2]] - vertices[indices[i]];
-        glm::vec3 normal = glm::normalize(glm::cross(v1, v2));
+        AVec3 v1 = vertices[indices[i + 1]] - vertices[indices[i]];
+        AVec3 v2 = vertices[indices[i + 2]] - vertices[indices[i]];
+        AVec3 normal = v1.cross(v2).normalize();
 
         normals[indices[i]] += normal;
         normals[indices[i + 1]] += normal;
         normals[indices[i + 2]] += normal;
     }
 
-    for (glm::vec3 &normal : normals)
+    for (AVec3 &normal : normals)
     {
-        normal = glm::normalize(normal);
+        normal = normal.normalize();
     }
 
     return normals;
@@ -37,7 +37,7 @@ ACube::ACube()
 
     // Vertices are duplicated for each face
     // This is to match the texture coordinates
-    std::vector<glm::vec3> vertices = {
+    std::vector<AVec3> vertices = {
         // Front face
         {-0.5f, -0.5f, -0.5f},
         {0.5f, -0.5f, -0.5f},
@@ -109,7 +109,7 @@ ACube::ACube()
     20, 21, 22, 22, 23, 20
     };
 
-    std::vector<glm::vec3> normals = CalculateNormals(vertices, indices);
+    std::vector<AVec3> normals = CalculateNormals(vertices, indices);
 
     meshComponent->SetVertices(vertices, normals, texCoords);
     meshComponent->SetIndices(indices);

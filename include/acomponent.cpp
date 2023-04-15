@@ -166,16 +166,16 @@ AMeshComponent::~AMeshComponent()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AMeshComponent::SetVertices(const std::vector<glm::vec3> &_vertices)
+void AMeshComponent::SetVertices(const std::vector<AVec3> &_vertices)
 {
     vertices = _vertices;
 
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(AVec3), vertices.data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void *)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(AVec3), (void *)0);
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -184,7 +184,7 @@ void AMeshComponent::SetVertices(const std::vector<glm::vec3> &_vertices)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AMeshComponent::SetVertices(const std::vector<glm::vec3> &_vertices, const std::vector<glm::vec3> &_normals)
+void AMeshComponent::SetVertices(const std::vector<AVec3> &_vertices, const std::vector<AVec3> &_normals)
 {
     assert(_vertices.size() == _normals.size());
 
@@ -214,7 +214,7 @@ void AMeshComponent::SetVertices(const std::vector<glm::vec3> &_vertices, const 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AMeshComponent::SetVertices(const std::vector<glm::vec3> &_vertices, const std::vector<glm::vec3> &_normals, const std::vector<glm::vec2> &_texCoords)
+void AMeshComponent::SetVertices(const std::vector<AVec3> &_vertices, const std::vector<AVec3> &_normals, const std::vector<glm::vec2> &_texCoords)
 {
     assert(_vertices.size() == _normals.size() && _vertices.size() == _texCoords.size());
 
