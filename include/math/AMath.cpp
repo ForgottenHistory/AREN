@@ -29,3 +29,13 @@ float APow(float x, float y)
 {
     return std::pow(x, y);
 }
+
+float RadiansToDegrees(float radians)
+{
+    return radians * 180.0f / 3.14159265359f;
+}
+
+float DegreesToRadians(float degrees)
+{
+    return degrees * 3.14159265359f / 180.0f;
+}

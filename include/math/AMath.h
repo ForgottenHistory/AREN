@@ -7,6 +7,9 @@ float ACos(float x);
 float ATan(float x);
 float ATan2(float y, float x);
 
-// Other utility functions
 float ASqrt(float x);
 float APow(float x, float y);
+
+// Angle conversion functions
+float RadiansToDegrees(float radians);
+float DegreesToRadians(float degrees);
