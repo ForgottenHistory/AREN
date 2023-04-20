@@ -81,3 +81,10 @@ private:
     ARenderer(const ARenderer&) = delete;
     ARenderer& operator=(const ARenderer&) = delete;
 };
+
+class Shader {
+    public:
+    std::string vertexShaderSource;
+    std::string fragmentShaderSource;
+    GLuint shaderProgram;
+};
