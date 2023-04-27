@@ -59,18 +59,7 @@ void ARenderer::Init()
 
     glEnable(GL_DEPTH_TEST);
 
-    // Load shaders
-    vertexShaderSource = ReadFile("shaders/vertex_shader.glsl");
-    fragmentShaderSource = ReadFile("shaders/fragment_shader.glsl");
-    GLuint vertexShader = LoadShader(GL_VERTEX_SHADER, vertexShaderSource);
-    GLuint fragmentShader = LoadShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
-
-    // Create and link the shader program
-    shaderProgram = CreateShaderProgram(vertexShader, fragmentShader);
-
-    // Clean up shader objects
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    CreateShaders();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -152,6 +141,22 @@ GLuint ARenderer::GetShaderProgram(const std::string &vertexShaderName, const st
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ARenderer::CreateShaders()
+{
+    // Load shaders
+    vertexShaderSource = ReadFile("shaders/vertex_shader.glsl");
+    fragmentShaderSource = ReadFile("shaders/fragment_shader.glsl");
+    GLuint vertexShader = LoadShader(GL_VERTEX_SHADER, vertexShaderSource);
+    GLuint fragmentShader = LoadShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
+
+    // Create and link the shader program
+    shaderProgram = CreateShaderProgram(vertexShader, fragmentShader);
+
+    // Clean up shader objects
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+}
 
 GLuint ARenderer::CreateShaderProgram(GLuint vertexShader, GLuint fragmentShader)
 {

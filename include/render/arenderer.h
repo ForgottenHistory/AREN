@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include "math/AVec3.h"
+#include "ashader.h"
 
 class ACamera;
 
@@ -56,6 +57,8 @@ private:
     ///////////////////////////////////////////////////////////////////////
     //  FUNCTIONS
     ///////////////////////////////////////////////////////////////////////
+    
+    void CreateShaders();
 
     GLuint CreateShaderProgram(GLuint vertexShader, GLuint fragmentShader);
 
@@ -75,16 +78,11 @@ private:
     
     std::map<std::pair<std::string, std::string>, GLuint> shaderCache;
 
+    AShader defaultShader;
+
     ///////////////////////////////////////////////////////////////////////
     
     // Private copy constructor and assignment operator to prevent copying
     ARenderer(const ARenderer&) = delete;
     ARenderer& operator=(const ARenderer&) = delete;
-};
-
-class Shader {
-    public:
-    std::string vertexShaderSource;
-    std::string fragmentShaderSource;
-    GLuint shaderProgram;
 };
