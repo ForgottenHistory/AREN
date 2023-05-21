@@ -265,7 +265,8 @@ void AMeshComponent::SetIndices(const std::vector<unsigned int> &_indices)
 
 void AMeshComponent::Render()
 {
-    ARenderer &renderer = ARenderer::GetInstance();
+    ARenderer* renderer = AMaster::GetInstance().renderer;
+    
     GLuint shaderProgram = material->GetShaderProgram();
     glUseProgram(shaderProgram);
 
@@ -273,10 +274,10 @@ void AMeshComponent::Render()
     glm::mat4 modelMatrix = owner->GetComponent<ATransform>()->GetModelMatrix();
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
-    renderer.SetShaderUniform(shaderProgram, "u_DiffuseColor", material->GetDiffuseColor());
-    renderer.SetShaderUniform(shaderProgram, "u_SpecularColor", material->GetSpecularColor());
-    renderer.SetShaderUniform(shaderProgram, "u_Shininess", material->GetShininess());
-    renderer.SetShaderUniform(shaderProgram, "u_Texture", 0);
+    renderer->SetShaderUniform(shaderProgram, "u_DiffuseColor", material->GetDiffuseColor());
+    renderer->SetShaderUniform(shaderProgram, "u_SpecularColor", material->GetSpecularColor());
+    renderer->SetShaderUniform(shaderProgram, "u_Shininess", material->GetShininess());
+    renderer->SetShaderUniform(shaderProgram, "u_Texture", 0);
 
     glBindVertexArray(VAO);
 

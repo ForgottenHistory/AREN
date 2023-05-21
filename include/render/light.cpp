@@ -1,7 +1,10 @@
-#include "light.h"
 #include "aobject.h"
 #include "amaster.h"
-#include "arenderer.h"
+
+#include "render/arenderer.h"
+#include "render/light.h"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ADirectionalLight::ADirectionalLight(AVec3 _diffuse, AVec3 _ambient, AVec3 _specular)
 {
@@ -9,6 +12,8 @@ ADirectionalLight::ADirectionalLight(AVec3 _diffuse, AVec3 _ambient, AVec3 _spec
     ambient = _ambient;
     specular = _specular;
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void ADirectionalLight::Render()
 {
@@ -21,9 +26,13 @@ void ADirectionalLight::Render()
         }
     }
 
-    ARenderer &renderer = ARenderer::GetInstance();
-    renderer.SetShaderUniform(renderer.shaderProgram, "u_Sun.position", AVec3(transform->GetPosition()));
-    renderer.SetShaderUniform(renderer.shaderProgram, "u_Sun.ambient", ambient);
-    renderer.SetShaderUniform(renderer.shaderProgram, "u_Sun.diffuse", diffuse);
-    renderer.SetShaderUniform(renderer.shaderProgram, "u_Sun.specular", specular);
+    ARenderer* renderer = AMaster::GetInstance().renderer;
+    GLuint shaderProgram = renderer->shaderProgram;
+
+    renderer->SetShaderUniform(shaderProgram, "u_Sun.position", AVec3(transform->GetPosition()));
+    renderer->SetShaderUniform(shaderProgram, "u_Sun.ambient", ambient);
+    renderer->SetShaderUniform(shaderProgram, "u_Sun.diffuse", diffuse);
+    renderer->SetShaderUniform(shaderProgram, "u_Sun.specular", specular);
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

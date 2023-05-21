@@ -1,7 +1,10 @@
 #pragma once
 #include <vector>
 
+class ATextureManager;
+class AMaterialManager;
 class AObjectManager;
+class AColorManager;
 class ARenderer;
 class AObject;
 
@@ -20,12 +23,24 @@ public:
 
     ~AMaster();
 
+    void Initialize();
+
+    // Main functions
     void MainLoop();
     void PreStart();
     void Start();
     void Update();
     void SecondUpdate();
     void Render();
+
+    void CreateStartObjects();
+
+    // Managers
+    ATextureManager* textureManager;
+    AMaterialManager* materialManager;
+    AObjectManager* objectManager;
+    ARenderer* renderer;
+    AColorManager* colorManager;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

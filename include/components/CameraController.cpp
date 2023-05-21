@@ -1,8 +1,12 @@
-#include "cameracontroller.h"
-#include "render/arenderer.h"
 #include "amaster.h"
+
 #include "time.h"
 #include "aobject.h"
+
+#include "cameracontroller.h"
+#include "render/arenderer.h"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 CameraController::CameraController(float _speed, float _sensitivity)
 {
@@ -10,9 +14,11 @@ CameraController::CameraController(float _speed, float _sensitivity)
     sensitivity = _sensitivity;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void CameraController::Update()
 {
-    GLFWwindow* window = ARenderer::GetInstance().window;
+    GLFWwindow* window = AMaster::GetInstance().renderer->window;
     ATransform* transform = owner->GetComponent<ATransform>();
 
     // Keyboard input
@@ -34,7 +40,7 @@ void CameraController::Update()
     double mouseX, mouseY;
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
-    glfwGetCursorPos(ARenderer::GetInstance().window, &mouseX, &mouseY);
+    glfwGetCursorPos(window, &mouseX, &mouseY);
 
     if (firstMouse)
     {

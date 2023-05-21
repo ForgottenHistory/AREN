@@ -2,31 +2,25 @@
 #include "glmpch.h"
 #include "math/AVec3.h"
 
-class ColorManager
+enum COLORS
+{
+    RED,
+    GREEN,
+    BLUE,
+    YELLOW,
+    WHITE,
+    BLACK,
+    PURPLE,
+    ORANGE,
+    BROWN,
+    PINK,
+    GRAY,
+    NUM_COLORS
+};
+
+class AColorManager
 {
 public:
-    enum COLORS
-    {
-        RED,
-        GREEN,
-        BLUE,
-        YELLOW,
-        WHITE,
-        BLACK,
-        PURPLE,
-        ORANGE,
-        BROWN,
-        PINK,
-        GRAY,
-        NUM_COLORS
-    };
-
-    static ColorManager &GetInstance()
-    {
-        static ColorManager instance; // create the singleton instance
-        return instance;
-    }
-
     AVec3 GetColor(COLORS color)
     {
         switch (color)
@@ -57,7 +51,4 @@ public:
             return AVec3(0.0f, 0.0f, 0.0f);
         }
     }
-
-private:
-    ColorManager() {} // private constructor to prevent instantiation
 };

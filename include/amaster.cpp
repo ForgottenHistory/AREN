@@ -1,12 +1,15 @@
-#include <amaster.h>
-#include <aobject.h>
+#include "amaster.h"
+#include "aobject.h"
 #include "aobjectmanager.h"
-#include <render/arenderer.h>
-#include <time.h>
+#include "time.h"
 #include "acomponent.h"
 #include "acolor.h"
 
+#include "render/atexturemanager.h"
+#include "render/amaterialmanager.h"
+#include "render/arenderer.h"
 #include "render/light.h"
+
 #include "components/movewithtime.h"
 #include "components/cameracontroller.h"
 
@@ -18,11 +21,39 @@
 AMaster::AMaster()
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // CREATE MANAGERS
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    objectManager = new AObjectManager();
+    colorManager = new AColorManager();
+    renderer = new ARenderer();
+    textureManager = new ATextureManager();
+    materialManager = new AMaterialManager();
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
 
-    AObjectManager &objectManager = AObjectManager::GetInstance();
-    ColorManager &colorManager = ColorManager::GetInstance();
-    ARenderer &renderer = ARenderer::GetInstance();
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+AMaster::~AMaster()
+{
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    delete objectManager;
+    delete colorManager;
+    delete renderer;
+    delete textureManager;
+    delete materialManager;
+
+    glfwTerminate();
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMaster::Initialize()
+{
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // CREATE SKYBOX
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,18 +66,91 @@ AMaster::AMaster()
     // CREATE CAMERA
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    mainCamera = objectManager.CreateObject();
+    mainCamera = objectManager->CreateObject();
     ATransform *cameraTrans = new ATransform();
     cameraTrans->SetPosition(glm::vec3(1.0f, 0.0f, 2.0f));
     mainCamera->AddComponent(cameraTrans);
 
     ACamera *camera = new ACamera();
-    renderer.SetCamera(camera);
+    renderer->SetCamera(camera);
     mainCamera->AddComponent(camera);
 
     CameraController *cameraController = new CameraController();
     mainCamera->AddComponent(cameraController);
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    CreateStartObjects();
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMaster::MainLoop()
+{
+    while (!glfwWindowShouldClose(renderer->window))
+    {
+        Update();
+        Render();
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMaster::PreStart()
+{
+    objectManager->PreStart();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMaster::Start()
+{
+    objectManager->Start();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMaster::Update()
+{
+    Time::UpdateTime();
+    objectManager->Update();
+
+    float elapsedTime = Time::elapsedTime;
+
+    if (elapsedTime >= printTime)
+    {
+        Time::PrintTime();
+        printTime = elapsedTime + 0.5f;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMaster::SecondUpdate()
+{
+    objectManager->SecondUpdate();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMaster::Render()
+{
+    renderer->Render();
+    objectManager->Render();
+
+    // Swap the front and back buffers
+    glfwSwapBuffers(renderer->window);
+
+    // Poll for and process events
+    glfwPollEvents();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void AMaster::CreateStartObjects()
+{
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // CREATE LIGHTS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +166,7 @@ AMaster::AMaster()
     // sunAmbient = colorManager.GetColor(ColorManager::WHITE);
     // sunSpecular = colorManager.GetColor(ColorManager::WHITE);
 
-    AObject *light = objectManager.CreateObject();
+    AObject *light = objectManager->CreateObject();
     ADirectionalLight *directionalLight = new ADirectionalLight(sunDiffuse,
                                                                 sunAmbient,
                                                                 sunSpecular);
@@ -84,103 +188,27 @@ AMaster::AMaster()
     // CREATE CUBES
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    ACube *floor = objectManager.CreateCube();
+    ACube *floor = objectManager->CreateCube();
     floor->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
     floor->GetComponent<ATransform>()->SetScale(glm::vec3(10.0f, 1.0f, 10.0f));
-    floor->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::BROWN));
+    floor->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager->GetColor(COLORS::BLUE));
     floor->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_shader");
 
-    ACube *cube = objectManager.CreateCube();
-    // cube->AddComponent( new TestMovement() );
+    ACube *cube = objectManager->CreateCube();
+    cube->AddComponent( new TestMovement() );
     cube->GetComponent<ATransform>()->SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
-    // cube->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::RED));
+    //cube->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager->GetColor(COLORS::RED));
     cube->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks.jpg");
-    // cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader.glsl", "fragment_simple_shader.glsl");
+    cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_simple_shader");
     cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_shader");
 
-    ACube *cube2 = objectManager.CreateCube();
+    ACube *cube2 = objectManager->CreateCube();
     cube2->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
     // cube2->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager.GetColor(ColorManager::BLUE));
     cube2->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks.jpg");
     cube2->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_normals_shader");
-}
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-AMaster::~AMaster()
-{
-    glfwTerminate();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void AMaster::MainLoop()
-{
-    ARenderer &renderer = ARenderer::GetInstance();
-    while (!glfwWindowShouldClose(renderer.window))
-    {
-        Update();
-        Render();
-    }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void AMaster::PreStart()
-{
-    AObjectManager &objectManager = AObjectManager::GetInstance();
-    objectManager.PreStart();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void AMaster::Start()
-{
-    AObjectManager &objectManager = AObjectManager::GetInstance();
-    objectManager.Start();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void AMaster::Update()
-{
-    AObjectManager &objectManager = AObjectManager::GetInstance();
-
-    Time::UpdateTime();
-    objectManager.Update();
-
-    float elapsedTime = Time::elapsedTime;
-
-    if (elapsedTime >= printTime)
-    {
-        Time::PrintTime();
-        printTime = elapsedTime + 0.5f;
-    }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void AMaster::SecondUpdate()
-{
-    AObjectManager &objectManager = AObjectManager::GetInstance();
-    objectManager.SecondUpdate();
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void AMaster::Render()
-{
-    AObjectManager &objectManager = AObjectManager::GetInstance();
-    ARenderer &renderer = ARenderer::GetInstance();
-
-    renderer.Render();
-    objectManager.Render();
-
-    // Swap the front and back buffers
-    glfwSwapBuffers(renderer.window);
-
-    // Poll for and process events
-    glfwPollEvents();
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

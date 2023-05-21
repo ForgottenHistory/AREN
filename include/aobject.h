@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include <typeindex>
 #include <string>
+
+#include "amaster.h"
 #include "acomponent.h"
 #include "math/AVec3.h"
 
