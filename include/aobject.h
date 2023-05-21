@@ -2,9 +2,11 @@
 
 #include <unordered_map>
 #include <typeindex>
-#include <acomponent.h>
 #include <string>
+#include "acomponent.h"
 #include "math/AVec3.h"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class AObject
 {

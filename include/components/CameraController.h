@@ -1,4 +1,6 @@
 #pragma once
+#include "glmpch.h"
+
 #include "acomponent.h"
 
 class CameraController : public Component
