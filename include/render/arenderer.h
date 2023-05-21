@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include "math/AVec3.h"
+#include "ashader.h"
 
 class ACamera;
 
@@ -56,6 +57,8 @@ private:
     ///////////////////////////////////////////////////////////////////////
     //  FUNCTIONS
     ///////////////////////////////////////////////////////////////////////
+    
+    void CreateShaders();
 
     GLuint CreateShaderProgram(GLuint vertexShader, GLuint fragmentShader);
 
@@ -74,6 +77,8 @@ private:
     ACamera* camera = nullptr;
     
     std::map<std::pair<std::string, std::string>, GLuint> shaderCache;
+
+    AShader defaultShader;
 
     ///////////////////////////////////////////////////////////////////////
     
