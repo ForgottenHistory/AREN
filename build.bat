@@ -6,7 +6,7 @@ set OUTPUT_FILE=%2
 set LIB_FOLDER=%3
 set PCH_FILE=./include/glmpch.h
 set PCH_OUTPUT=./include/glmpch.h.gch
-set DEBUG=true
+set DEBUG=false
 
 rem Compile the precompiled header
 if "%DEBUG%"=="true" (
