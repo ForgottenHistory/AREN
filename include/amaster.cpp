@@ -1,6 +1,6 @@
 #include <amaster.h>
 #include <aobject.h>
-#include "amanager.h"
+#include "aobjectmanager.h"
 #include <render/arenderer.h>
 #include <time.h>
 #include "acomponent.h"

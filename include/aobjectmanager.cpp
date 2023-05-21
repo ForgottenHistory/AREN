@@ -1,4 +1,4 @@
-#include "amanager.h"
+#include "aobjectmanager.h"
 #include "aobject.h"
 
 #define STB_IMAGE_IMPLEMENTATION
