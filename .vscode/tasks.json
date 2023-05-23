@@ -8,7 +8,8 @@
             "args": [
                 "${workspaceFolder}/include",
                 "main",
-                "${workspaceFolder}/libs"
+                "${workspaceFolder}/libs",
+                "true"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"

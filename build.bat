@@ -4,9 +4,9 @@ setlocal enabledelayedexpansion
 set INCLUDE_FOLDER=%1
 set OUTPUT_FILE=%2
 set LIB_FOLDER=%3
+set DEBUG=%4
 set PCH_FILE=./include/glmpch.h
 set PCH_OUTPUT=./include/glmpch.h.gch
-set DEBUG=false
 
 rem Compile the precompiled header
 if "%DEBUG%"=="true" (
