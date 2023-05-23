@@ -1,6 +1,6 @@
 #pragma once
 #include "glmpch.h"
-#include "math/AVec3.h"
+#include "math/avec3.h"
 
 enum COLORS
 {
