@@ -1,7 +1,7 @@
 #include "amaster.h"
 
 #include "render/amaterial.h"
-#include "render/arenderer.h"
+#include "render/ashadermanager.h"
 #include "render/atexturemanager.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -16,28 +16,28 @@ AMaterial::AMaterial()
 
 void AMaterial::SetVertexShader(const std::string &_vertexShader)
 {
-    ARenderer* renderer = AMaster::GetInstance().renderer;
+    AShaderManager* shaderManager = AMaster::GetInstance().shaderManager;
     vertexShader = _vertexShader;
-    shaderProgram = renderer->GetShaderProgram(vertexShader, fragmentShader);
+    shaderProgram = shaderManager->GetShaderProgram(vertexShader, fragmentShader);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMaterial::SetFragmentShader(const std::string &_fragmentShader)
 {
-    ARenderer* renderer = AMaster::GetInstance().renderer;
+    AShaderManager* shaderManager = AMaster::GetInstance().shaderManager;
     fragmentShader = _fragmentShader;
-    shaderProgram = renderer->GetShaderProgram(vertexShader, fragmentShader);
+    shaderProgram = shaderManager->GetShaderProgram(vertexShader, fragmentShader);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AMaterial::SetShaders(const std::string &_vertexShader, const std::string &_fragmentShader)
 {
-    ARenderer* renderer = AMaster::GetInstance().renderer;
+    AShaderManager* shaderManager = AMaster::GetInstance().shaderManager;
     vertexShader = _vertexShader;
     fragmentShader = _fragmentShader;
-    shaderProgram = renderer->GetShaderProgram(vertexShader, fragmentShader);
+    shaderProgram = shaderManager->GetShaderProgram(vertexShader, fragmentShader);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

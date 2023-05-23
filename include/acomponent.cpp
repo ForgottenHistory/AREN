@@ -1,8 +1,10 @@
 #include "acomponent.h"
-#include "aobject.h"
+
+#include "render/ashadermanager.h"
 #include "amaster.h"
-#include <render/arenderer.h>
+#include "aobject.h"
 #include "aobjectmanager.h"
+#include "math/amatrix4x4.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // TRANSFORM COMPONENT
@@ -97,12 +99,12 @@ void ACamera::Update()
     UpdateProjectionMatrix();
 }
 
-const glm::mat4 &ACamera::GetViewMatrix() const
+const AMatrix4x4 &ACamera::GetViewMatrix() const
 {
     return viewMatrix;
 }
 
-const glm::mat4 &ACamera::GetProjectionMatrix() const
+const AMatrix4x4 &ACamera::GetProjectionMatrix() const
 {
     return projectionMatrix;
 }
@@ -129,7 +131,7 @@ void ACamera::UpdateViewMatrix()
     glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 
     // Update the view matrix
-    viewMatrix = glm::lookAt(position, position + direction, up);
+    viewMatrix = AMatrix4x4(glm::lookAt(position, position + direction, up));
 }
 
 void ACamera::UpdateProjectionMatrix()
@@ -141,7 +143,7 @@ void ACamera::UpdateProjectionMatrix()
     float farPlane = 100.0f;
 
     // Update the projection matrix
-    projectionMatrix = glm::perspective(fov, aspectRatio, nearPlane, farPlane);
+    projectionMatrix = AMatrix4x4(glm::perspective(fov, aspectRatio, nearPlane, farPlane));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -265,7 +267,7 @@ void AMeshComponent::SetIndices(const std::vector<unsigned int> &_indices)
 
 void AMeshComponent::Render()
 {
-    ARenderer* renderer = AMaster::GetInstance().renderer;
+    AShaderManager* shaderManager = AMaster::GetInstance().shaderManager;
     
     GLuint shaderProgram = material->GetShaderProgram();
     glUseProgram(shaderProgram);
@@ -274,10 +276,10 @@ void AMeshComponent::Render()
     glm::mat4 modelMatrix = owner->GetComponent<ATransform>()->GetModelMatrix();
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
-    renderer->SetShaderUniform(shaderProgram, "u_DiffuseColor", material->GetDiffuseColor());
-    renderer->SetShaderUniform(shaderProgram, "u_SpecularColor", material->GetSpecularColor());
-    renderer->SetShaderUniform(shaderProgram, "u_Shininess", material->GetShininess());
-    renderer->SetShaderUniform(shaderProgram, "u_Texture", 0);
+    shaderManager->SetShaderUniform(shaderProgram, "u_DiffuseColor", material->GetDiffuseColor());
+    shaderManager->SetShaderUniform(shaderProgram, "u_SpecularColor", material->GetSpecularColor());
+    shaderManager->SetShaderUniform(shaderProgram, "u_Shininess", material->GetShininess());
+    shaderManager->SetShaderUniform(shaderProgram, "u_Texture", 0);
 
     glBindVertexArray(VAO);
 

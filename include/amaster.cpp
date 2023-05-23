@@ -9,6 +9,7 @@
 #include "render/amaterialmanager.h"
 #include "render/arenderer.h"
 #include "render/light.h"
+#include "render/ashadermanager.h"
 
 #include "components/movewithtime.h"
 #include "components/cameracontroller.h"
@@ -29,6 +30,7 @@ AMaster::AMaster()
     renderer = new ARenderer();
     textureManager = new ATextureManager();
     materialManager = new AMaterialManager();
+    shaderManager = new AShaderManager();
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -44,6 +46,7 @@ AMaster::~AMaster()
     delete renderer;
     delete textureManager;
     delete materialManager;
+    delete shaderManager;
 
     glfwTerminate();
     
@@ -54,6 +57,13 @@ AMaster::~AMaster()
 
 void AMaster::Initialize()
 {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // INITIALIZE MANAGERS
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    renderer->Initialize();
+    shaderManager->Initialize();
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // CREATE SKYBOX
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,7 +201,8 @@ void AMaster::CreateStartObjects()
     ACube *floor = objectManager->CreateCube();
     floor->GetComponent<ATransform>()->SetPosition(glm::vec3(0.0f, -1.0f, 0.0f));
     floor->GetComponent<ATransform>()->SetScale(glm::vec3(10.0f, 1.0f, 10.0f));
-    floor->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager->GetColor(COLORS::BLUE));
+    AVec3 color = colorManager->GetColor(COLORS::BLUE);
+    floor->GetComponent<AMeshComponent>()->material->SetDiffuseColor(color);
     floor->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_shader");
 
     ACube *cube = objectManager->CreateCube();
@@ -199,7 +210,7 @@ void AMaster::CreateStartObjects()
     cube->GetComponent<ATransform>()->SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
     //cube->GetComponent<AMeshComponent>()->material->SetDiffuseColor(colorManager->GetColor(COLORS::RED));
     cube->GetComponent<AMeshComponent>()->material->SetDiffuseTexture("bricks.jpg");
-    cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_simple_shader");
+    //cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_simple_shader");
     cube->GetComponent<AMeshComponent>()->material->SetShaders("vertex_shader", "fragment_shader");
 
     ACube *cube2 = objectManager->CreateCube();

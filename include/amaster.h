@@ -5,6 +5,7 @@ class ATextureManager;
 class AMaterialManager;
 class AObjectManager;
 class AColorManager;
+class AShaderManager;
 class ARenderer;
 class AObject;
 
@@ -41,6 +42,7 @@ public:
     AObjectManager* objectManager;
     ARenderer* renderer;
     AColorManager* colorManager;
+    AShaderManager* shaderManager;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

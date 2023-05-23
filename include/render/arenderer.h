@@ -8,6 +8,9 @@
 #include "math/AVec3.h"
 #include "ashader.h"
 
+///////////////////////////////////////////////////////////////////////
+
+class AShaderManager;
 class ACamera;
 
 ///////////////////////////////////////////////////////////////////////
@@ -23,24 +26,18 @@ public:
     ARenderer();
     ~ARenderer();
 
-    void Init();
+    void Initialize();
 
     void Render();
 
     void SetCamera(ACamera* _camera) { camera = _camera; }
     ACamera* GetCamera() { return camera; }
 
-    void SetShaderUniform(GLuint shaderProgram, const std::string &name, const AVec3 &value);
-    void SetShaderUniform(GLuint shaderProgram, const std::string &name, float value);
-
-    GLuint GetShaderProgram(const std::string &vertexShaderName, const std::string &fragmentShaderName);
-
     ///////////////////////////////////////////////////////////////////////
     //  VARIABLES
     ///////////////////////////////////////////////////////////////////////
 
     GLFWwindow *window = nullptr;
-    GLuint shaderProgram;
 
     ///////////////////////////////////////////////////////////////////////
 
@@ -49,13 +46,7 @@ private:
     ///////////////////////////////////////////////////////////////////////
     //  FUNCTIONS
     ///////////////////////////////////////////////////////////////////////
-    
-    void CreateShaders();
 
-    GLuint CreateShaderProgram(GLuint vertexShader, GLuint fragmentShader);
-
-    GLuint LoadShader(GLenum shaderType, std::string &shaderSource);
-    std::string ReadFile(const char *filePath);
 
     ///////////////////////////////////////////////////////////////////////
     //  VARIABLES
@@ -63,14 +54,8 @@ private:
 
     GLuint VAO, VBO;
     
-    std::string vertexShaderSource;
-    std::string fragmentShaderSource;
-    
     ACamera* camera = nullptr;
-    
-    std::map<std::pair<std::string, std::string>, GLuint> shaderCache;
-
-    AShader defaultShader;
+    AShaderManager* shaderManager = nullptr;
 
     ///////////////////////////////////////////////////////////////////////
 };

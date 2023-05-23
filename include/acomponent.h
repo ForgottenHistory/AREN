@@ -5,14 +5,16 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "math/AVec3.h"
 #include "render/amaterial.h"
+#include "math/amatrix4x4.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // COMPONENT BASE CLASS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+class AVec3;
 class AObject;
+
 class Component
 {
 public:
@@ -74,8 +76,8 @@ public:
     ACamera();
 
     // Accessor functions
-    const glm::mat4 &GetViewMatrix() const;
-    const glm::mat4 &GetProjectionMatrix() const;
+    const AMatrix4x4 &GetViewMatrix() const;
+    const AMatrix4x4 &GetProjectionMatrix() const;
 
     void Update() override;
 
@@ -84,8 +86,8 @@ public:
 
 private:
     // Matrices
-    glm::mat4 viewMatrix;
-    glm::mat4 projectionMatrix;
+    AMatrix4x4 viewMatrix;
+    AMatrix4x4 projectionMatrix;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

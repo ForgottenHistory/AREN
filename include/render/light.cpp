@@ -1,7 +1,7 @@
 #include "aobject.h"
 #include "amaster.h"
 
-#include "render/arenderer.h"
+#include "render/ashadermanager.h"
 #include "render/light.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,13 +26,13 @@ void ADirectionalLight::Render()
         }
     }
 
-    ARenderer* renderer = AMaster::GetInstance().renderer;
-    GLuint shaderProgram = renderer->shaderProgram;
+    AShaderManager* shaderManager = AMaster::GetInstance().shaderManager;
+    GLuint shaderProgram = 6;
 
-    renderer->SetShaderUniform(shaderProgram, "u_Sun.position", AVec3(transform->GetPosition()));
-    renderer->SetShaderUniform(shaderProgram, "u_Sun.ambient", ambient);
-    renderer->SetShaderUniform(shaderProgram, "u_Sun.diffuse", diffuse);
-    renderer->SetShaderUniform(shaderProgram, "u_Sun.specular", specular);
+    shaderManager->SetShaderUniform(shaderProgram, "u_Sun.position", AVec3(transform->GetPosition()));
+    shaderManager->SetShaderUniform(shaderProgram, "u_Sun.ambient", ambient);
+    shaderManager->SetShaderUniform(shaderProgram, "u_Sun.diffuse", diffuse);
+    shaderManager->SetShaderUniform(shaderProgram, "u_Sun.specular", specular);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
