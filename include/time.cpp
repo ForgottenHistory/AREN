@@ -1,7 +1,8 @@
 #include "time.h"
 #include <glfw/glfw3.h>
-#include <cmath>
 #include <iostream>
+
+#include "math/amath.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,9 +28,9 @@ void Time::UpdateTime()
     elapsedTime += deltaTime;
 
     // Calculate the offset based on elapsed time
-    sinTime = sin(elapsedTime);
-    cosTime = cos(elapsedTime);
-    tanTime = tan(elapsedTime);
+    sinTime = ASin(elapsedTime);
+    cosTime = ACos(elapsedTime);
+    tanTime = ATan(elapsedTime);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
