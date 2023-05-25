@@ -18,13 +18,15 @@ AShaderManager::~AShaderManager()
 
 void AShaderManager::Initialize()
 {
-    CreateShaders();
+    CreateDefaultShaders();
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void AShaderManager::Render(AVec3 cameraPos, AMatrix4x4 viewMatrix, AMatrix4x4 projectionMatrix)
 {
     for (auto &shaderPair : shaderCache)
-        {
+    {
             GLuint shaderProgram = shaderPair.second;
             glUseProgram(shaderProgram);
 
@@ -35,7 +37,7 @@ void AShaderManager::Render(AVec3 cameraPos, AMatrix4x4 viewMatrix, AMatrix4x4 p
             glUniform3f(viewPosLoc, cameraPos.x, cameraPos.y, cameraPos.z);
             glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(viewMatrix.ToGLM()));
             glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix.ToGLM()));
-        }
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,7 +91,7 @@ GLuint AShaderManager::GetShaderProgram(const std::string &vertexShaderName, con
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AShaderManager::CreateShaders()
+void AShaderManager::CreateDefaultShaders()
 {
     // Load shaders
     vertexShaderSource = ReadFile("shaders/vertex_shader.glsl");
