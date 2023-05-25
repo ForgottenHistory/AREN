@@ -27,7 +27,7 @@ void ADirectionalLight::Render()
     }
 
     AShaderManager* shaderManager = AMaster::GetInstance().shaderManager;
-    GLuint shaderProgram = 6;
+    GLuint shaderProgram = 3;
 
     shaderManager->SetShaderUniform(shaderProgram, "u_Sun.position", AVec3(transform->GetPosition()));
     shaderManager->SetShaderUniform(shaderProgram, "u_Sun.ambient", ambient);
