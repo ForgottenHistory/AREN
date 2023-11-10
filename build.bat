@@ -27,3 +27,6 @@ if "%DEBUG%"=="true" (
 ) else (
     g++ %CPPFiles% -Winvalid-pch -include %PCH_FILE% -o %OUTPUT_FILE% -lstdc++ -I"%INCLUDE_FOLDER%" -L"%LIB_FOLDER%" -lglfw3 -lopengl32 -lgdi32 -luser32
 )
+
+rem Run the executable
+"%OUTPUT_FILE%"
